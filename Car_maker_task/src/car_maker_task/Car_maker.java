@@ -1,25 +1,12 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package car_maker_task;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-/**
- *
- * @author Женя
- */
 public class Car_maker {
 
-    /**
-     * @param args the command line arguments
-     */
     public static void main(String[] args) {
-        // TODO code application logic here
 
         List<Maker> makers = new ArrayList<>();
         List<Car> cars = new ArrayList<>();
@@ -43,9 +30,11 @@ public class Car_maker {
         cars.add(new Car(makers.get(1), "Audi a4", 2005, "green"));
 
         for (Car c : cars) {
-            System.out.println("Company " + c._maker._name + " "
-                    + c._maker._adress + " " + c._maker._found_year);
-            System.out.println("Car " + c._mark + " " + c._year + " " + c._color);
+            System.out.println("Company " + c.getMaker().getName() + " "
+                    + c.getMaker().getAdress() + " "
+                    + c.getMaker().getFoundYear());
+            System.out.println("Car " + c.getModel() + " "
+                    + c.getYear() + " " + c.getColor());
         }
     }
 

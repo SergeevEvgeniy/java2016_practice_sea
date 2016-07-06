@@ -1,26 +1,32 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package car_maker_task;
 
-/**
- *
- * @author Женя
- */
 public class Car {
 
-    Maker _maker;
-    String _mark;
-    int _year;
-    String _color;
+    private final Maker _maker;
+    private final String _model;
+    private final int _year;
+    private final String _color;
 
-    public Car(Maker maker, String mark, int year, String color) {
+    public Car(Maker maker, String model, int year, String color) {
         _maker = maker;
-        _mark = mark;
+        _model = model;
         _year = year;
         _color = color;
     }
 
+    public Maker getMaker() {
+        return _maker;
+    }
+
+    public String getModel() {
+        return _model;
+    }
+
+    public String getColor() {
+        return _color;
+    }
+
+    public int getYear() {
+        return _year;
+    }
 }
