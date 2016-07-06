@@ -29,13 +29,28 @@ public class Car_maker {
         cars.add(new Car(makers.get(4), "trooper", 1990, "black"));
         cars.add(new Car(makers.get(1), "Audi a4", 2005, "green"));
 
-        for (Car c : cars) {
-            System.out.println("Company " + c.getMaker().getName() + " "
-                    + c.getMaker().getAdress() + " "
-                    + c.getMaker().getFoundYear());
-            System.out.println("Car " + c.getModel() + " "
-                    + c.getYear() + " " + c.getColor());
+        Scanner in = new Scanner(System.in);
+        System.out.print("Введите параметр поиска: ");
+        String search_param = in.nextLine();
+
+        Output output = new Output();
+        try {
+            int param = Integer.parseInt(search_param);
+            for (Car c : cars) {
+                if ((c.getMaker().getFoundYear() == param)
+                        || (c.getYear() == param)) {
+                    output.Write(c);
+                }
+            }
+        } catch (NumberFormatException ex) {
+            for (Car c : cars) {
+                if (c.getMaker().getAdress().equals(search_param)
+                        || c.getMaker().getName().equals(search_param)
+                        || c.getColor().equals(search_param)
+                        || c.getModel().equals(search_param)) {
+                    output.Write(c);
+                }
+            }
         }
     }
-
 }
