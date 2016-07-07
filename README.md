@@ -9,4 +9,4 @@ Created console application with concerns and cars. Output consist of all inform
 
 Task02
 -------
-Realized parametric search. Output consist of full information about car and concern's name. 
+Realized parametric search. Output consist of full information about car and concern's name. All match of search 
