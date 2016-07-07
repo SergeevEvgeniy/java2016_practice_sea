@@ -29,9 +29,9 @@ public class Car_maker {
         cars.add(new Car(makers.get(4), "trooper", 1990, "black"));
         cars.add(new Car(makers.get(1), "Audi a4", 2005, "green"));
 
-        Scanner in = new Scanner(System.in);
+        Scanner input = new Scanner(System.in);
         System.out.print("Введите параметр поиска: ");
-        String search_param = in.nextLine();
+        String search_param = input.nextLine();
 
         Output output = new Output();
         try {
@@ -39,7 +39,7 @@ public class Car_maker {
             for (Car c : cars) {
                 if ((c.getMaker().getFoundYear() == param)
                         || (c.getYear() == param)) {
-                    output.Write(c);
+                    output.write(c);
                 }
             }
         } catch (NumberFormatException ex) {
@@ -48,7 +48,7 @@ public class Car_maker {
                         || c.getMaker().getName().equals(search_param)
                         || c.getColor().equals(search_param)
                         || c.getModel().equals(search_param)) {
-                    output.Write(c);
+                    output.write(c);
                 }
             }
         }
