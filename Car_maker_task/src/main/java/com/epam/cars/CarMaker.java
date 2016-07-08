@@ -1,11 +1,15 @@
+package com.epam.cars;
 
+
+import com.epam.cars.model.Maker;
+import com.epam.cars.model.Car;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-public class Car_maker {
+public class CarMaker {
 
-    public static void main(String[] args) {
+    public static void main(final String[] args) {
 
         List<Maker> makers = new ArrayList<>();
         List<Car> cars = new ArrayList<>();
@@ -30,24 +34,25 @@ public class Car_maker {
 
         Scanner in = new Scanner(System.in);
         System.out.print("¬ведите параметр поиска: ");
-        String search_param = in.nextLine();
+        String searchParam;
+        searchParam = in.nextLine();
 
         Output output = new Output();
         try {
-            int param = Integer.parseInt(search_param);
+            int param = Integer.parseInt(searchParam);
             for (Car c : cars) {
                 if ((c.getMaker().getFoundYear() == param)
                         || (c.getYear() == param)) {
-                    output.Write(c);
+                    output.write(c);
                 }
             }
         } catch (NumberFormatException ex) {
             for (Car c : cars) {
-                if (c.getMaker().getAdress().equals(search_param)
-                        || c.getMaker().getName().equals(search_param)
-                        || c.getColor().equals(search_param)
-                        || c.getModel().equals(search_param)) {
-                    output.Write(c);
+                if (c.getMaker().getAdress().equals(searchParam)
+                        || c.getMaker().getName().equals(searchParam)
+                        || c.getColor().equals(searchParam)
+                        || c.getModel().equals(searchParam)) {
+                    output.write(c);
                 }
             }
         }
