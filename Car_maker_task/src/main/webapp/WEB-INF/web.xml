@@ -6,7 +6,7 @@
     <display-name>Archetype Created Web Application</display-name>
     <servlet>
         <servlet-name>ServletTMP</servlet-name>
-        <servlet-class>servletTMP</servlet-class>
+        <servlet-class>com.epam.cars.web.ServletTMP</servlet-class>
     </servlet>
  
     <servlet-mapping>
