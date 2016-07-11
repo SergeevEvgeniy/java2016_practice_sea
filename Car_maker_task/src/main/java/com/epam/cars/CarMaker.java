@@ -1,15 +1,28 @@
 package com.epam.cars;
 
-
 import com.epam.cars.model.Maker;
 import com.epam.cars.model.Car;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
+/**
+ * Default main class
+ *
+ * @author Женя
+ */
 public class CarMaker {
 
-    public static void main(final String[] args) {
+    public static final Logger LOG = LoggerFactory.getLogger(CarMaker.class);
+
+    /**
+     * Default main
+     *
+     *
+     */
+    public static void main() {
 
         List<Maker> makers = new ArrayList<>();
         List<Car> cars = new ArrayList<>();
@@ -32,7 +45,7 @@ public class CarMaker {
         cars.add(new Car(makers.get(4), "trooper", 1990, "black"));
         cars.add(new Car(makers.get(1), "Audi a4", 2005, "green"));
 
-        Scanner in = new Scanner(System.in);
+        Scanner in = new Scanner(System.in, "UTF-8");
         System.out.print("Введите параметр поиска: ");
         String searchParam;
         searchParam = in.nextLine();
@@ -40,21 +53,18 @@ public class CarMaker {
         Output output = new Output();
         try {
             int param = Integer.parseInt(searchParam);
-            for (Car c : cars) {
-                if ((c.getMaker().getFoundYear() == param)
-                        || (c.getYear() == param)) {
-                    output.write(c);
-                }
-            }
+            cars.stream().filter((c) -> ((c.getMaker().getFoundYear() == param)
+                    || (c.getYear() == param))).forEach((c) -> {
+                        output.write(c);
+                    });
         } catch (NumberFormatException ex) {
-            for (Car c : cars) {
-                if (c.getMaker().getAdress().equals(searchParam)
-                        || c.getMaker().getName().equals(searchParam)
-                        || c.getColor().equals(searchParam)
-                        || c.getModel().equals(searchParam)) {
-                    output.write(c);
-                }
-            }
+            LOG.info("Insert non-Integer");
+            cars.stream().filter((c) -> (c.getMaker().getAdress().equals(searchParam)
+                    || c.getMaker().getName().equals(searchParam)
+                    || c.getColor().equals(searchParam)
+                    || c.getModel().equals(searchParam))).forEach((c) -> {
+                        output.write(c);
+                    });
         }
     }
 }

@@ -1,5 +1,6 @@
 package com.epam.cars.web;
 
+import static com.epam.cars.CarMaker.LOG;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.ServletException;
@@ -15,7 +16,9 @@ public class ServletTMP extends HttpServlet {
             throws ServletException, IOException {
 
         PrintWriter out = resp.getWriter();
-        out.print("<h1>Hello World! </h1>");
+        LOG.info("i'm alive!");
+          
+        //out.print("<h1>Hello World! </h1>");
 
     }
 }
