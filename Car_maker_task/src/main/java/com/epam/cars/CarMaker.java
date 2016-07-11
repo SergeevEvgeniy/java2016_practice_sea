@@ -46,7 +46,7 @@ public class CarMaker {
         cars.add(new Car(makers.get(1), "Audi a4", 2005, "green"));
 
         Scanner in = new Scanner(System.in, "UTF-8");
-        System.out.print("¬ведите параметр поиска: ");
+        System.out.print("Insert search parameter: ");
         String searchParam;
         searchParam = in.nextLine();
 
