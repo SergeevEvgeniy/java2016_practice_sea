@@ -26,7 +26,7 @@ public class CarMaker {
         List<Car> cars = dcm.getDefCars();
 
         Scanner in = new Scanner(System.in, "UTF-8");
-        System.out.print("¬ведите параметр поиска: ");
+        System.out.print("Insert search parameter: ");
         String searchParam;
         searchParam = in.nextLine();
 
