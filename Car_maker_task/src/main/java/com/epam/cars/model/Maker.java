@@ -6,10 +6,10 @@ public class Maker {
     private final String adress;
     private final int foundYear;
 
-    public Maker(final String name, final String adress, final int found_year) {
+    public Maker(final String name, final String adress, final int foundYear) {
         this.name = name;
         this.adress = adress;
-        this.foundYear = found_year;
+        this.foundYear = foundYear;
     }
 
     public String getName() {
