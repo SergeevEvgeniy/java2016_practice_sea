@@ -13,4 +13,14 @@
         <servlet-name>ServletTMP</servlet-name>
         <url-pattern>/hello</url-pattern>
     </servlet-mapping>
+    
+    <servlet>
+        <servlet-name>SWriteCars</servlet-name>
+        <servlet-class>com.epam.cars.web.SWriteCars</servlet-class>
+    </servlet>
+ 
+    <servlet-mapping>
+        <servlet-name>SWriteCars</servlet-name>
+        <url-pattern>/list</url-pattern>
+    </servlet-mapping>
 </web-app>
