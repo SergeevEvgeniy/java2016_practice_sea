@@ -22,10 +22,23 @@ public class SWriteCars extends HttpServlet {
 
         PrintWriter out = resp.getWriter();
 
+        //out.println(req.getPathInfo().substring(1));
+
+        /*    switch (req.getPathInfo()) {
+         case "/list":
+         break;
+         case "/new":
+         break;
+         case "/search":
+         break;
+         }*/
         for (Car c : cars) {
             String outStr = c.getMaker().getName() + " " + c.getModel() + " "
                     + c.getYear() + " " + c.getColor();
             out.println("<p> " + outStr + "</p>");
+
+            req.setAttribute("cars", cars);
+            req.getRequestDispatcher("writer.jsp").forward(req, resp);
         }
     }
 }

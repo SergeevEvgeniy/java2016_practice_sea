@@ -5,13 +5,13 @@
 <web-app>
     <display-name>Archetype Created Web Application</display-name>
     <servlet>
-        <servlet-name>SHello</servlet-name>
-        <servlet-class>com.epam.cars.web.ServletTMP</servlet-class>
+        <servlet-name>SSearch</servlet-name>
+        <servlet-class>com.epam.cars.web.SSearch</servlet-class>
     </servlet>
  
     <servlet-mapping>
-        <servlet-name>SHello</servlet-name>
-        <url-pattern>/hello</url-pattern>
+        <servlet-name>SSearch</servlet-name>
+        <url-pattern>/</url-pattern>
     </servlet-mapping>
     
     <servlet>
@@ -22,5 +22,15 @@
     <servlet-mapping>
         <servlet-name>SWriteCars</servlet-name>
         <url-pattern>/list</url-pattern>
+    </servlet-mapping>
+    
+    <servlet>
+        <servlet-name>SAddCars</servlet-name>
+        <servlet-class>com.epam.cars.web.SAddCars</servlet-class>
+    </servlet>
+ 
+    <servlet-mapping>
+        <servlet-name>SAddCars</servlet-name>
+        <url-pattern>/new</url-pattern>
     </servlet-mapping>
 </web-app>
