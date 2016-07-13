@@ -1,5 +1,6 @@
 package com.epam.cars.web;
 
+import com.epam.cars.Searcher;
 import java.io.IOException;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -14,5 +15,14 @@ public class SSearch extends HttpServlet {
             throws ServletException, IOException {
 
         req.getRequestDispatcher("search.jsp").forward(req, resp);
+    }
+
+    @Override
+    protected void doPost(final HttpServletRequest req,
+            final HttpServletResponse resp)
+            throws ServletException, IOException {
+
+        req.setAttribute("cars", new Searcher().SearchCar(req.getParameter("Search_TB")));
+        req.getRequestDispatcher("writer.jsp").forward(req, resp);
     }
 }

@@ -5,11 +5,38 @@ import com.epam.cars.model.Maker;
 import java.util.ArrayList;
 import java.util.List;
 
-public class DefaultCarMaker {
+public class CarRepo {
+
+    private List<Car> cars = new ArrayList<>();
+    private List<Maker> makers = new ArrayList<>();
+
+    static CarRepo instance;
+
+    private CarRepo() {
+    }
+
+    public static synchronized CarRepo getInstance() {
+        if (instance == null) {
+            instance = new CarRepo();
+        }
+        return instance;
+    }
+
+    public List<Car> getCars() {
+        if (cars == null) {
+            getDefCars();
+        }
+        return cars;
+    }
+
+    public void SetCar(final String name, final String adress, final int foundYear,
+            final String model, final int year, final String color) {
+        cars.add(new Car(new Maker(name, adress, foundYear), model, year, color));
+    }
 
     public List<Car> getDefCars() {
-        List<Maker> makers = new ArrayList<>();
-        List<Car> cars = new ArrayList<>();
+        makers = new ArrayList<>();
+        cars = new ArrayList<>();
 
         makers.add(new Maker("Fiat", "Italy", 1899));
         makers.add(new Maker("VW", "Germany", 1900));
@@ -28,27 +55,7 @@ public class DefaultCarMaker {
         cars.add(new Car(makers.get(3), "joker", 2007, "black"));
         cars.add(new Car(makers.get(4), "trooper", 1990, "black"));
         cars.add(new Car(makers.get(1), "Audi a4", 2005, "green"));
-        
+
         return cars;
     }
-    
-    /*Search
-    Output output = new Output();
-        try {
-            int param = Integer.parseInt(searchParam);
-            cars.stream().filter((c) -> ((c.getMaker().getFoundYear() == param)
-                    || (c.getYear() == param))).forEach((c) -> {
-                        output.write(c);
-                    });
-        } catch (NumberFormatException ex) {
-            LOG.info("Insert non-Integer");
-            cars.stream().filter((c) -> (c.getMaker().getAdress().equals(searchParam)
-                    || c.getMaker().getName().equals(searchParam)
-                    || c.getColor().equals(searchParam)
-                    || c.getModel().equals(searchParam))).forEach((c) -> {
-                        output.write(c);
-                    });
-
-        }
-    */
 }
