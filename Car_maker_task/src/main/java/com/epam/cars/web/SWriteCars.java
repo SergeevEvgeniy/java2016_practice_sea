@@ -12,33 +12,42 @@ import javax.servlet.http.HttpServletResponse;
 
 public class SWriteCars extends HttpServlet {
 
+    private List<Car> cars;
+
     @Override
     protected void doGet(final HttpServletRequest req,
             final HttpServletResponse resp)
             throws ServletException, IOException {
 
         DefaultCarMaker dcm = new DefaultCarMaker();
-        List<Car> cars = dcm.getDefCars();
+        cars = dcm.getDefCars();
 
-        PrintWriter out = resp.getWriter();
-
+        //PrintWriter out = resp.getWriter();
         //out.println(req.getPathInfo().substring(1));
+        //req.setAttribute("cars", cars);
+        //req.getRequestDispatcher("writer.jsp").forward(req, resp);
+        PrintWriter out = resp.getWriter();
+        out.println(req.getParameter("Concern_Name_TB"));
+        out.println(req.getParameter("Concern_Adres_TB"));
+        out.println(req.getParameter("Concern_FoundYear_TB"));
+        out.println(req.getParameter("Car_Model_TB"));
+        out.println(req.getParameter("Car_Color_TB"));
+        out.println(req.getParameter("Car_Year_TB"));
 
-        /*    switch (req.getPathInfo()) {
-         case "/list":
-         break;
-         case "/new":
-         break;
-         case "/search":
-         break;
-         }*/
-        for (Car c : cars) {
-            String outStr = c.getMaker().getName() + " " + c.getModel() + " "
-                    + c.getYear() + " " + c.getColor();
-            out.println("<p> " + outStr + "</p>");
+    }
 
-            req.setAttribute("cars", cars);
-            req.getRequestDispatcher("writer.jsp").forward(req, resp);
-        }
+    @Override
+    protected void doPost(final HttpServletRequest req,
+            final HttpServletResponse resp)
+            throws ServletException, IOException {
+        doGet(req, resp);
+        PrintWriter out = resp.getWriter();
+        out.println(req.getParameter("Concern_Name_TB"));
+        out.println(req.getParameter("Concern_Adres_TB"));
+        out.println(req.getParameter("Concern_FoundYear_TB"));
+        out.println(req.getParameter("Car_Model_TB"));
+        out.println(req.getParameter("Car_Color_TB"));
+        out.println(req.getParameter("Car_Year_TB"));
+
     }
 }

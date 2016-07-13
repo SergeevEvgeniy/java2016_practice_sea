@@ -8,8 +8,17 @@
         </p>
 
         <p> 
+        <form type=post >
             <Input name="Find_B" type="submit" value="Find" />  
-        </p>
+        </form>
 
-    </body>
+        <form type=post action=addCar.jsp>
+            <Input name="CreateNew_B" type="submit" value="New" />  
+        </form>
+
+    </p>
+
+
+
+</body>
 </html>

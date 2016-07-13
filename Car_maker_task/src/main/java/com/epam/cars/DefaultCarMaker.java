@@ -31,4 +31,24 @@ public class DefaultCarMaker {
         
         return cars;
     }
+    
+    /*Search
+    Output output = new Output();
+        try {
+            int param = Integer.parseInt(searchParam);
+            cars.stream().filter((c) -> ((c.getMaker().getFoundYear() == param)
+                    || (c.getYear() == param))).forEach((c) -> {
+                        output.write(c);
+                    });
+        } catch (NumberFormatException ex) {
+            LOG.info("Insert non-Integer");
+            cars.stream().filter((c) -> (c.getMaker().getAdress().equals(searchParam)
+                    || c.getMaker().getName().equals(searchParam)
+                    || c.getColor().equals(searchParam)
+                    || c.getModel().equals(searchParam))).forEach((c) -> {
+                        output.write(c);
+                    });
+
+        }
+    */
 }

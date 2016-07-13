@@ -10,8 +10,9 @@
         <ul>
             <c:forEach var="car" items="${cars}">
                 <li>
-                    <c:out value="${car.maker.name} ${car.model} ${car.year} ${car.color}"/>
-
+                    <a href="edit">
+                        <c:out value="${car.maker.name} ${car.model} ${car.year} ${car.color}"/>
+                    </a>
                 </li>
             </c:forEach>
         </ul>
