@@ -23,7 +23,7 @@ public class CarRepo {
     }
 
     public List<Car> getCars() {
-        if (cars == null) {
+        if (cars.isEmpty()) {
             getDefCars();
         }
         return cars;

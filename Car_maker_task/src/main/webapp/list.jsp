@@ -10,7 +10,7 @@
         <ul>
             <c:forEach var="car" items="${cars}">
                 <li>
-                    <a href="new" method=post>
+                    <a href="/edit?cardId=${item.getCardNumber()}" method=post>
                         <c:out value="${car.maker.name} ${car.model} ${car.year} ${car.color}"/>
                     </a>
                 </li>

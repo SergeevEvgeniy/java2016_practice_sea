@@ -19,7 +19,7 @@ public class SListCars extends HttpServlet {
         //PrintWriter out = resp.getWriter();
         //out.println(req.getPathInfo().substring(1));
         req.setAttribute("cars", repo.getCars());
-        req.getRequestDispatcher("writer.jsp").forward(req, resp);
+        req.getRequestDispatcher("list.jsp").forward(req, resp);
 
     }
 

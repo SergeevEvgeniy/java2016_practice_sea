@@ -23,6 +23,6 @@ public class SSearch extends HttpServlet {
             throws ServletException, IOException {
 
         req.setAttribute("cars", new Searcher().SearchCar(req.getParameter("Search_TB")));
-        req.getRequestDispatcher("writer.jsp").forward(req, resp);
+        req.getRequestDispatcher("list.jsp").forward(req, resp);
     }
 }
