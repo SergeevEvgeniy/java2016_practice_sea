@@ -10,13 +10,13 @@
         <ul>
             <c:forEach var="car" items="${cars}">
                 <li>
-                    <a href="/edit?cardId=${item.getCardNumber()}" method=post>
-                        <c:out value="${car.maker.name} ${car.model} ${car.year} ${car.color}"/>
+                    <a href="/Car_maker_task/edit?Id=${car.key}">
+                        <c:out value="${car.value.maker.name} ${car.value.model} ${car.value.year} ${car.value.color}"/>
                     </a>
                 </li>
             </c:forEach>
         </ul>
-        <form  action="SSearch.java" >
+        <form  action="Search.java" >
             <p> 
                 <Input name="Back_B" type="submit" value="Back to Main" />  
             </p>

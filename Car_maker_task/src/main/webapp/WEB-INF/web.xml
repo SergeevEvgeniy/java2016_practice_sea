@@ -5,32 +5,43 @@
 <web-app>
     <display-name>Archetype Created Web Application</display-name>
     <servlet>
-        <servlet-name>SSearch</servlet-name>
-        <servlet-class>com.epam.cars.web.SSearch</servlet-class>
+        <servlet-name>Search</servlet-name>
+        <servlet-class>com.epam.cars.web.Search</servlet-class>
     </servlet>
  
     <servlet-mapping>
-        <servlet-name>SSearch</servlet-name>
+        <servlet-name>Search</servlet-name>
         <url-pattern>/</url-pattern>
     </servlet-mapping>
     
     <servlet>
-        <servlet-name>SListCars</servlet-name>
-        <servlet-class>com.epam.cars.web.SListCars</servlet-class>
+        <servlet-name>ListCars</servlet-name>
+        <servlet-class>com.epam.cars.web.ListCars</servlet-class>
     </servlet>
  
     <servlet-mapping>
-        <servlet-name>SListCars</servlet-name>
+        <servlet-name>ListCars</servlet-name>
         <url-pattern>/list</url-pattern>
     </servlet-mapping>
     
     <servlet>
-        <servlet-name>SAddCars</servlet-name>
-        <servlet-class>com.epam.cars.web.SAddCars</servlet-class>
+        <servlet-name>AddCar</servlet-name>
+        <servlet-class>com.epam.cars.web.AddCar</servlet-class>
     </servlet>
  
     <servlet-mapping>
-        <servlet-name>SAddCars</servlet-name>
+        <servlet-name>AddCar</servlet-name>
         <url-pattern>/new</url-pattern>
+    </servlet-mapping>
+    
+    
+    <servlet>
+        <servlet-name>EditCar</servlet-name>
+        <servlet-class>com.epam.cars.web.EditCar</servlet-class>
+    </servlet>
+ 
+    <servlet-mapping>
+        <servlet-name>EditCar</servlet-name>
+        <url-pattern>/edit</url-pattern>
     </servlet-mapping>
 </web-app>

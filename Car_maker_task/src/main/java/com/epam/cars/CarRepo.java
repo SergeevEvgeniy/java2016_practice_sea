@@ -3,14 +3,16 @@ package com.epam.cars;
 import com.epam.cars.model.Car;
 import com.epam.cars.model.Maker;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
-public class CarRepo {
+public class CarRepo implements CarRepository {
 
-    private List<Car> cars = new ArrayList<>();
+    private Map<String, Car> cars = new HashMap<String, Car>();
     private List<Maker> makers = new ArrayList<>();
 
-    static CarRepo instance;
+    public static CarRepo instance;
 
     private CarRepo() {
     }
@@ -22,21 +24,21 @@ public class CarRepo {
         return instance;
     }
 
-    public List<Car> getCars() {
+    @Override
+    public Map<String, Car> getCars() {
         if (cars.isEmpty()) {
             getDefCars();
         }
         return cars;
     }
 
-    public void SetCar(final String name, final String adress, final int foundYear,
-            final String model, final int year, final String color) {
-        cars.add(new Car(new Maker(name, adress, foundYear), model, year, color));
+    @Override
+    public void putCar(final Car car) {
+        cars.put(Integer.toString(cars.size() + 1), car);
+
     }
 
-    public List<Car> getDefCars() {
-        makers = new ArrayList<>();
-        cars = new ArrayList<>();
+    public Map<String, Car> getDefCars() {
 
         makers.add(new Maker("Fiat", "Italy", 1899));
         makers.add(new Maker("VW", "Germany", 1900));
@@ -44,18 +46,28 @@ public class CarRepo {
         makers.add(new Maker("Honda", "Japan", 1946));
         makers.add(new Maker("Isuzu", "Japan", 1916));
 
-        cars.add(new Car(makers.get(1), "Audi a4", 1995, "red"));
-        cars.add(new Car(makers.get(1), "VW Polo", 2005, "green"));
-        cars.add(new Car(makers.get(0), "Fiat Panda", 2004, "black"));
-        cars.add(new Car(makers.get(0), "Alfa Romeo giulia", 2002, "yelow"));
-        cars.add(new Car(makers.get(2), "mustang", 2003, "red"));
-        cars.add(new Car(makers.get(2), "escort", 2013, "blue"));
-        cars.add(new Car(makers.get(3), "civic", 2001, "pink"));
-        cars.add(new Car(makers.get(4), "piazza", 1995, "red"));
-        cars.add(new Car(makers.get(3), "joker", 2007, "black"));
-        cars.add(new Car(makers.get(4), "trooper", 1990, "black"));
-        cars.add(new Car(makers.get(1), "Audi a4", 2005, "green"));
+        cars.put("1", new Car(makers.get(1), "Audi a4", 1995, "red"));
+        cars.put("2", new Car(makers.get(1), "VW Polo", 2005, "green"));
+        cars.put("3", new Car(makers.get(0), "Fiat Panda", 2004, "black"));
+        cars.put("4", new Car(makers.get(0), "Alfa Romeo giulia", 2002, "yelow"));
+        cars.put("5", new Car(makers.get(2), "mustang", 2003, "red"));
+        cars.put("6", new Car(makers.get(2), "escort", 2013, "blue"));
+        cars.put("7", new Car(makers.get(3), "civic", 2001, "pink"));
+        cars.put("8", new Car(makers.get(4), "piazza", 1995, "red"));
+        cars.put("9", new Car(makers.get(3), "joker", 2007, "black"));
+        cars.put("10", new Car(makers.get(4), "trooper", 1990, "black"));
+        cars.put("11", new Car(makers.get(1), "Audi a4", 2005, "green"));
 
         return cars;
+    }
+
+    @Override
+    public Car getCar(String id) {
+        return cars.get(id);
+    }
+
+    @Override
+    public void editCar(String id, Car car) {
+        cars.put(id, car);
     }
 }

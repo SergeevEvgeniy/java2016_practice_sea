@@ -7,7 +7,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-public class SSearch extends HttpServlet {
+public class Search extends HttpServlet {
 
     @Override
     protected void doGet(final HttpServletRequest req,
@@ -22,7 +22,7 @@ public class SSearch extends HttpServlet {
             final HttpServletResponse resp)
             throws ServletException, IOException {
 
-        req.setAttribute("cars", new Searcher().SearchCar(req.getParameter("Search_TB")));
+        req.setAttribute("cars", new Searcher().searchCar(req.getParameter("Search_TB")));
         req.getRequestDispatcher("list.jsp").forward(req, resp);
     }
 }

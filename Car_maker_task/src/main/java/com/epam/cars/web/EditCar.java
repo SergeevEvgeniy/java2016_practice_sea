@@ -1,25 +1,28 @@
 package com.epam.cars.web;
 
 import com.epam.cars.CarRepo;
+import com.epam.cars.CarRepository;
+import com.epam.cars.model.Car;
+import com.epam.cars.model.Maker;
 import java.io.IOException;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-public class SListCars extends HttpServlet {
+public class EditCar extends HttpServlet {
 
-    private final CarRepo repo = CarRepo.getInstance();
+    private final CarRepository repo = CarRepo.getInstance();
+    private String id;
 
     @Override
     protected void doGet(final HttpServletRequest req,
             final HttpServletResponse resp)
             throws ServletException, IOException {
 
-        //PrintWriter out = resp.getWriter();
-        //out.println(req.getPathInfo().substring(1));
-        req.setAttribute("cars", repo.getCars());
-        req.getRequestDispatcher("list.jsp").forward(req, resp);
+        id = req.getParameter("Id");
+        req.setAttribute("car", repo.getCar(id));
+        req.getRequestDispatcher("edit.jsp").forward(req, resp);
 
     }
 
@@ -28,13 +31,15 @@ public class SListCars extends HttpServlet {
             final HttpServletResponse resp)
             throws ServletException, IOException {
 
-        repo.SetCar(req.getParameter("Concern_Name_TB"),
+        Car car = new Car(new Maker(req.getParameter("Concern_Name_TB"),
                 req.getParameter("Concern_Adres_TB"),
-                Integer.parseInt(req.getParameter("Concern_FoundYear_TB")),
+                Integer.parseInt(req.getParameter("Concern_FoundYear_TB"))),
                 req.getParameter("Car_Model_TB"),
                 Integer.parseInt(req.getParameter("Car_Year_TB")),
                 req.getParameter("Car_Color_TB"));
-        
+
+        repo.editCar(id,car);
+
         resp.sendRedirect("/Car_maker_task/list");
     }
 }
