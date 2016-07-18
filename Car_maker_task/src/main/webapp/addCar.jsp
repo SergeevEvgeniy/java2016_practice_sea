@@ -1,13 +1,11 @@
 <%@page contentType="text/html" pageEncoding="windows-1251"%>
-<!DOCTYPE html>
 <html>
     <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=windows-1251">
         <title>Create a car</title>
     </head>
     <body>
         <h1>Create car</h1>
-        <form type=post action=list method=post>
+        <form action=list method=post>
             <h2>Concern</h2>
             <p> Name
                 <input name="Concern_Name_TB" type="text"/>

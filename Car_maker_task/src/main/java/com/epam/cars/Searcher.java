@@ -2,7 +2,6 @@ package com.epam.cars;
 
 import com.epam.cars.model.Car;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
 
 public class Searcher {

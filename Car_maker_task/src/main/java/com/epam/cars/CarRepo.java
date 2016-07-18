@@ -33,7 +33,7 @@ public class CarRepo implements CarRepository {
     }
 
     @Override
-    public void putCar(final Car car) {
+    public void saveCar(final Car car) {
         cars.put(Integer.toString(cars.size() + 1), car);
 
     }
@@ -67,7 +67,7 @@ public class CarRepo implements CarRepository {
     }
 
     @Override
-    public void editCar(String id, Car car) {
+    public void updateCar(String id, Car car) {
         cars.put(id, car);
     }
 }

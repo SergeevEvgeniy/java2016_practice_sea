@@ -6,7 +6,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-public class AddCar extends HttpServlet {
+public class AddCarServlet extends HttpServlet {
 
     @Override
     protected void doGet(final HttpServletRequest req,

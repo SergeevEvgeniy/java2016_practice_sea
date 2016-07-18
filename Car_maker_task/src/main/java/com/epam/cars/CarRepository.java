@@ -7,9 +7,9 @@ public interface CarRepository {
 
     public Map<String, Car> getCars();
 
-    public void putCar(Car car);
+    public void saveCar(Car car);
     
     public Car getCar(String id);
     
-    public void editCar(String id,Car car);
+    public void updateCar(String id,Car car);
 }

@@ -1,14 +1,12 @@
 <%@page contentType="text/html" pageEncoding="windows-1251"%>
 <%@ page isELIgnored="false"%>
-<!DOCTYPE html>
 <html>
     <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=windows-1251">
         <title>JSP Page</title>
     </head>
     <body>
         <h1>Edit car</h1>
-        <form type=post action=edit method=post>
+        <form action=edit method=post>
             <h2>Concern</h2>
             <p> Name
                 <input name="Concern_Name_TB" type="text" value="${car.maker.name}"/>

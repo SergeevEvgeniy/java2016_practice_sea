@@ -10,19 +10,19 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-public class EditCar extends HttpServlet {
+public class ListCarsServlet extends HttpServlet {
 
     private final CarRepository repo = CarRepo.getInstance();
-    private String id;
 
     @Override
     protected void doGet(final HttpServletRequest req,
             final HttpServletResponse resp)
             throws ServletException, IOException {
 
-        id = req.getParameter("Id");
-        req.setAttribute("car", repo.getCar(id));
-        req.getRequestDispatcher("edit.jsp").forward(req, resp);
+        //PrintWriter out = resp.getWriter();
+        //out.println(req.getPathInfo().substring(1));
+        req.setAttribute("cars", repo.getCars());
+        req.getRequestDispatcher("list.jsp").forward(req, resp);
 
     }
 
@@ -37,8 +37,7 @@ public class EditCar extends HttpServlet {
                 req.getParameter("Car_Model_TB"),
                 Integer.parseInt(req.getParameter("Car_Year_TB")),
                 req.getParameter("Car_Color_TB"));
-
-        repo.editCar(id,car);
+        repo.saveCar(car);
 
         resp.sendRedirect("/Car_maker_task/list");
     }
