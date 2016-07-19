@@ -2,6 +2,7 @@ package com.epam.cars.model;
 
 public class Car {
 
+    private final int id = 0;
     private final Maker maker;
     private final String model;
     private final int year;
