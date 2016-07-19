@@ -4,6 +4,9 @@
 
 <web-app>
     <display-name>Archetype Created Web Application</display-name>
+    <listener>
+        <listener-class> com.epam.cars.DBServletContextListener</listener-class>
+    </listener>
     <servlet>
         <servlet-name>SearchServlet</servlet-name>
         <servlet-class>com.epam.cars.web.SearchServlet</servlet-class>
