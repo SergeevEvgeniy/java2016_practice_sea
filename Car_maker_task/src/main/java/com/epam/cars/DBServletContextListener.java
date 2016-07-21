@@ -1,3 +1,8 @@
+/*<listener>
+        <listener-class> com.epam.cars.DBServletContextListener</listener-class>
+    </listener>*/
+
+
 package com.epam.cars;
 
 import java.sql.Connection;
@@ -65,8 +70,9 @@ public class DBServletContextListener
             stmt.executeUpdate(query);
 
         } catch (SQLException sqlEx) {
-            sqlEx.printStackTrace();
-            // if catch - table exist
+           // sqlEx.printStackTrace();
+            System.out.println("Table alredy exist");
+
         } finally {
             try {
                 con.close();
@@ -76,10 +82,10 @@ public class DBServletContextListener
                 stmt.close();
             } catch (SQLException se) {
             }
-            try {
-                rs.close();
-            } catch (SQLException se) {
-            }
+//            try {
+//                rs.close();
+//            } catch (SQLException se) {
+//            }
         }
 
     }

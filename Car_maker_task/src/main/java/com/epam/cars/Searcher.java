@@ -6,7 +6,7 @@ import java.util.Map;
 
 public class Searcher {
 
-    private final CarRepo repo = CarRepo.getInstance();
+    private final MapCarRepository repo = MapCarRepository.getInstance();
 
     public Map<String, Car> searchCar(String searchParam) {
         Map<String, Car> matchList = new HashMap<>();

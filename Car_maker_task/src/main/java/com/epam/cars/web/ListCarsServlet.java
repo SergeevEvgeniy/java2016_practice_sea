@@ -1,6 +1,6 @@
 package com.epam.cars.web;
 
-import com.epam.cars.CarRepo;
+import com.epam.cars.MapCarRepository;
 import com.epam.cars.CarRepository;
 import com.epam.cars.model.Car;
 import com.epam.cars.model.Maker;
@@ -12,7 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 
 public class ListCarsServlet extends HttpServlet {
 
-    private final CarRepository repo = CarRepo.getInstance();
+    private final CarRepository repo = MapCarRepository.getInstance();
 
     @Override
     protected void doGet(final HttpServletRequest req,
