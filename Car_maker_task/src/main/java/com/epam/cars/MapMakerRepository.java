@@ -8,7 +8,7 @@ import java.util.Map;
 
 public class MapMakerRepository implements MakerRepository {
 
-    private final Map<Long, Maker> makers = new HashMap<Long, Maker>();
+    private final Map<Long, Maker> makers = new HashMap<>();
     private long lastMakerId = 0;
 
     public static MapMakerRepository instance;

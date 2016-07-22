@@ -1,7 +1,7 @@
 package com.epam.cars.web;
 
-import com.epam.cars.MapCarRepository;
 import com.epam.cars.CarRepository;
+import com.epam.cars.MapCarRepository;
 import com.epam.cars.model.Car;
 import com.epam.cars.model.Maker;
 import java.io.IOException;
@@ -15,14 +15,14 @@ public class EditCarServlet extends HttpServlet {
     private final CarRepository repo = MapCarRepository.getInstance();
     private static final String ID = "Id";
     private static final String CAR = "car";
-    private String id;
+    private Long id;
 
     @Override
     protected void doGet(final HttpServletRequest req,
             final HttpServletResponse resp)
             throws ServletException, IOException {
 
-        id = req.getParameter(ID);
+        id = Long.parseLong(req.getParameter(ID));
         req.setAttribute(CAR, repo.getCar(id));
         req.getRequestDispatcher("edit.jsp").forward(req, resp);
 

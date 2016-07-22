@@ -8,9 +8,9 @@ import java.util.Map;
 
 public class MapCarRepository implements CarRepository {
 
-    private Map<Long, Car> cars = new HashMap<Long, Car>();
+    private final Map<Long, Car> cars = new HashMap<>();
     private long lastCarId = 0;
-    MakerRepository makerRep = MapMakerRepository.getInstance();
+    private final MakerRepository makerRep = MapMakerRepository.getInstance();
 
     private MapCarRepository() {
         this.saveCar(new Car(makerRep.getMaker(2L), "Audi a4", 1995, "red"));

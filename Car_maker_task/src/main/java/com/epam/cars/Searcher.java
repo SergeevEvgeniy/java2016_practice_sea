@@ -11,7 +11,7 @@ public class Searcher {
     public Map<String, Car> searchCar(String searchParam) {
         Map<String, Car> matchList = new HashMap<>();
 
-        try {
+       /* try {
             int param = Integer.parseInt(searchParam);
             int idF = 1;
             for (String key : repo.getCars().keySet()) {
@@ -32,7 +32,7 @@ public class Searcher {
                     idF++;
                 }
             }
-        }
+        }*/
         return matchList;
     }
 }
