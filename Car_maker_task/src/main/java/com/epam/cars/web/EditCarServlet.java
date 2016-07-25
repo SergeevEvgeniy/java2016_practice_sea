@@ -1,7 +1,7 @@
 package com.epam.cars.web;
 
 import com.epam.cars.CarRepository;
-import com.epam.cars.MapCarRepository;
+import com.epam.cars.h2.H2CarRepository;
 import com.epam.cars.model.Car;
 import com.epam.cars.model.Maker;
 import java.io.IOException;
@@ -12,7 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 
 public class EditCarServlet extends HttpServlet {
 
-    private final CarRepository repo = MapCarRepository.getInstance();
+    private final CarRepository repo = H2CarRepository.getInstance();
     private static final String ID = "Id";
     private static final String CAR = "car";
     private Long id;
@@ -24,6 +24,7 @@ public class EditCarServlet extends HttpServlet {
 
         id = Long.parseLong(req.getParameter(ID));
         req.setAttribute(CAR, repo.getCar(id));
+        req.setAttribute(ID, id);
         req.getRequestDispatcher("edit.jsp").forward(req, resp);
 
     }
@@ -40,7 +41,7 @@ public class EditCarServlet extends HttpServlet {
                 Integer.parseInt(req.getParameter("Car_Year_TB")),
                 req.getParameter("Car_Color_TB"));
 
-        repo.updateCar(id, car);
+        repo.updateCar(Long.parseLong(req.getParameter("Id_H_TB")), car);
 
         resp.sendRedirect("/Car_maker_task/list");
     }

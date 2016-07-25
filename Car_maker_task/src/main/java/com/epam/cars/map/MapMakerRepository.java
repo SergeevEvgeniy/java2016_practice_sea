@@ -1,5 +1,6 @@
-package com.epam.cars;
+package com.epam.cars.map;
 
+import com.epam.cars.MakerRepository;
 import com.epam.cars.model.Maker;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -28,7 +29,7 @@ public class MapMakerRepository implements MakerRepository {
         this.saveMaker(new Maker("Isuzu", "Japan", 1916));
     }
 
-    @Override
+    //@Override
     public List<Maker> getMakers() {
         return new ArrayList(makers.values());
     }

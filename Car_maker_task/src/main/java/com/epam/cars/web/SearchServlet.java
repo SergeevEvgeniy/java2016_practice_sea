@@ -22,7 +22,7 @@ public class SearchServlet extends HttpServlet {
             final HttpServletResponse resp)
             throws ServletException, IOException {
 
-        req.setAttribute("cars", new Searcher().searchCar(req.getParameter("Search_TB")));
+       // req.setAttribute("cars", new Searcher().searchCar(req.getParameter("Search_TB")));
         req.getRequestDispatcher("list.jsp").forward(req, resp);
     }
 }

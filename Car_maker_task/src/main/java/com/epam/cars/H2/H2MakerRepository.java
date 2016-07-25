@@ -6,21 +6,13 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
-import java.sql.Statement;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 public class H2MakerRepository implements MakerRepository {
 
-    private final Map<Long, Maker> makers = new HashMap<>();
+    private final Maker nullMaker = new Maker("name", "adress", 0);
 
-    private static final String MAKER_Q = "select * from Public.MAKER";
-
-    private ConnectionProvider connect;
+    private ConnectionProvider connect = new ConnectionProvider();
 
     private static PreparedStatement pstmt;
 
@@ -36,53 +28,13 @@ public class H2MakerRepository implements MakerRepository {
     }
 
     private H2MakerRepository() {
-
     }
 
-    @Override
-    public List<Maker> getMakers() {
-        try (Connection con = DriverManager.getConnection(connect.getUrl(),
-                connect.getUser(), connect.getPassword());
-                Statement stmt = con.createStatement();
-                ResultSet rs = stmt.executeQuery(MAKER_Q)) {
-
-            ResultSetMetaData meta = rs.getMetaData();
-
-            while (rs.next()) {
-                String name = "";
-                int found_year = 0;
-                String adress = "";
-                long id = 0;
-
-                for (int i = 0; i < meta.getColumnCount(); i++) {
-                    switch (meta.getColumnLabel(i + 1)) {
-                        case "ID_MAKER":
-                            id = rs.getLong(i + 1);
-                            if (id > lastMakerId) {
-                                lastMakerId = id;
-                            }
-                            break;
-                        case "NAME":
-                            name = rs.getString(i + 1);
-                            break;
-                        case "ADRESS":
-                            adress = rs.getString(i + 1);
-                            break;
-                        case "FOUND_YEAR":
-                            found_year = rs.getInt(i + 1);
-                            break;
-                    }
-                }
-                Maker maker = new Maker(name, adress, found_year);
-                maker.setId(id);
-                makers.put(id, maker);
-            }
-
-        } catch (SQLException sqlEx) {
-            // sqlEx.printStackTrace();
-        }
-
-        return new ArrayList(makers.values());
+    private Maker toMaker(final ResultSet rs) throws SQLException {
+        Maker maker = new Maker(rs.getString("NAME"), rs.getString("ADRESS"),
+                rs.getInt("FOUND_YEAR"));
+        maker.setId(rs.getLong("ID_MAKER"));
+        return maker;
     }
 
     @Override
@@ -102,7 +54,23 @@ public class H2MakerRepository implements MakerRepository {
 
     @Override
     public Maker getMaker(Long id) {
-        return makers.get(id);
+        System.out.println("in getMaker(id) "+id);
+        try (Connection con = DriverManager.getConnection(connect.getUrl(),
+                connect.getUser(), connect.getPassword())) {
+
+            pstmt = con.prepareStatement("select * from MAKER WHERE ID_MAKER=?");
+            pstmt.setLong(1, id);
+
+            System.out.println("Find id"+ id);
+            ResultSet rs = pstmt.executeQuery();
+            System.out.println(rs.getString("NAME"));
+            
+            return toMaker(rs);
+
+        } catch (SQLException sqlEx) {
+            System.out.println("getMaker crash "+sqlEx); // sqlEx.printStackTrace();
+        }
+        return nullMaker;
     }
 
     @Override

@@ -3,25 +3,21 @@ package com.epam.cars.h2;
 import com.epam.cars.CarRepository;
 import com.epam.cars.MakerRepository;
 import com.epam.cars.model.Car;
+import com.epam.cars.model.Maker;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 
 public class H2CarRepository implements CarRepository {
 
-    private final Map<Long, Car> cars = new HashMap<>();
+    private final List<Car> cars = new LinkedList<>();
 
-    private static final String CAR_Q = "select * from Public.CAR";
-
-    private ConnectionProvider connect;
+    private final ConnectionProvider connect = new ConnectionProvider();
 
     private static PreparedStatement pstmt;
 
@@ -29,6 +25,9 @@ public class H2CarRepository implements CarRepository {
 
     private long lastCarId = 0;
     private final MakerRepository makerRep = H2MakerRepository.getInstance();
+
+    private final Maker nullMaker = new Maker("name", "adress", 0);
+    private final Car nullCar = new Car(nullMaker, "model", 0, " color");
 
     public static synchronized H2CarRepository getInstance() {
         if (instance == null) {
@@ -42,7 +41,17 @@ public class H2CarRepository implements CarRepository {
 
     @Override
     public Car getCar(Long id) {
-        return cars.get(id);
+        try (Connection con = DriverManager.getConnection(connect.getUrl(),
+                connect.getUser(), connect.getPassword())) {
+            pstmt = con.prepareStatement("select * from CAR WHERE ID_CAR=?");
+            pstmt.setLong(1, id);
+
+            return toCar(pstmt.executeQuery());
+
+        } catch (SQLException sqlEx) {
+            // sqlEx.printStackTrace();
+        }
+        return nullCar;
     }
 
     @Override
@@ -50,47 +59,23 @@ public class H2CarRepository implements CarRepository {
         try (Connection con = DriverManager.getConnection(connect.getUrl(),
                 connect.getUser(), connect.getPassword());
                 Statement stmt = con.createStatement();
-                ResultSet rs = stmt.executeQuery(CAR_Q)) {
-
-            ResultSetMetaData meta = rs.getMetaData();
+                ResultSet rs = stmt.executeQuery("select * from Public.CAR")) {
 
             while (rs.next()) {
-                String model = "";
-                int year = 0;
-                String color = "";
-                long id_car = 0;
-                long id_maker = 0;
-
-                for (int i = 0; i < meta.getColumnCount(); i++) {
-                    switch (meta.getColumnLabel(i + 1)) {
-                        case "ID_MAKER":
-                            id_maker = rs.getLong(i + 1);
-                            break;
-                        case "MODEL":
-                            model = rs.getString(i + 1);
-                            break;
-                        case "COLOR":
-                            color = rs.getString(i + 1);
-                            break;
-                        case "YEAR":
-                            year = rs.getInt(i + 1);
-                            break;
-                        case "ID_CAR":
-                            id_car = rs.getLong(i + 1);
-                            if (id_car > lastCarId) {
-                                lastCarId = id_car;
-                                break;
-                            }
-                    }
-                }
-                Car car = new Car(makerRep.getMaker(id_maker), model, year, color);
-                car.setId(id_car);
-                cars.put(id_car, car);
+                Car car = toCar(rs);
+                cars.add(car);
             }
         } catch (SQLException sqlEx) {
-            // sqlEx.printStackTrace();
+            System.out.println("Wrong connection in getCars " + sqlEx);// sqlEx.printStackTrace();
         }
-        return new ArrayList(cars.values());
+        return new LinkedList(cars);
+    }
+
+    private Car toCar(final ResultSet rs) throws SQLException {
+        Car car = new Car(makerRep.getMaker(rs.getLong("ID_MAKER")),
+                rs.getString("MODEL"), rs.getInt("YEAR"), rs.getString("COLOR"));
+        car.setId(rs.getLong("ID_CAR"));
+        return car;
     }
 
     @Override

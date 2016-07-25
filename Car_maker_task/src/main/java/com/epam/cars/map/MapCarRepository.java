@@ -1,5 +1,7 @@
-package com.epam.cars;
+package com.epam.cars.map;
 
+import com.epam.cars.CarRepository;
+import com.epam.cars.MakerRepository;
 import com.epam.cars.model.Car;
 import java.util.ArrayList;
 import java.util.HashMap;
