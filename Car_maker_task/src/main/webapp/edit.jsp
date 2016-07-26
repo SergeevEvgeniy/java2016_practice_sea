@@ -9,13 +9,13 @@
         <form action=edit method=post>
             <h2>Concern</h2>
             <p> Name
-                <input name="Concern_Name_TB" type="text" value="${car.maker}"/>
+                <input name="Concern_Name_TB" type="text" value="${car.maker.name}"/>
             </p>
             <p> Adres 
-                <input name="Concern_Adres_TB" type="text" value="${car.maker.name}"/>
+                <input name="Concern_Adres_TB" type="text" value="${car.maker.adress}"/>
             </p>
             <p> FoundYear 
-                <input name="Concern_FoundYear_TB" type="text" value="${car.getMaker().getFoundYear()}"/>
+                <input name="Concern_FoundYear_TB" type="text" value="${car.maker.foundYear}"/>
             </p>
 
             <h2>Car</h2>

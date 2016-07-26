@@ -12,13 +12,12 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.LinkedList;
 import java.util.List;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class H2CarRepository implements CarRepository {
 
-    private final List<Car> cars = new LinkedList<>();
-
     private final ConnectionProvider connect = new ConnectionProvider();
-
     private static PreparedStatement pstmt;
 
     public static H2CarRepository instance;
@@ -28,6 +27,8 @@ public class H2CarRepository implements CarRepository {
 
     private final Maker nullMaker = new Maker("name", "adress", 0);
     private final Car nullCar = new Car(nullMaker, "model", 0, " color");
+
+    private static final Logger log = LoggerFactory.getLogger(H2MakerRepository.class.getName());
 
     public static synchronized H2CarRepository getInstance() {
         if (instance == null) {
@@ -45,8 +46,10 @@ public class H2CarRepository implements CarRepository {
                 connect.getUser(), connect.getPassword())) {
             pstmt = con.prepareStatement("select * from CAR WHERE ID_CAR=?");
             pstmt.setLong(1, id);
+            ResultSet rs = pstmt.executeQuery();
+            rs.next();
 
-            return toCar(pstmt.executeQuery());
+            return toCar(rs);
 
         } catch (SQLException sqlEx) {
             // sqlEx.printStackTrace();
@@ -56,6 +59,7 @@ public class H2CarRepository implements CarRepository {
 
     @Override
     public List<Car> getCars() {
+        List<Car> cars = new LinkedList<>();
         try (Connection con = DriverManager.getConnection(connect.getUrl(),
                 connect.getUser(), connect.getPassword());
                 Statement stmt = con.createStatement();
@@ -66,7 +70,7 @@ public class H2CarRepository implements CarRepository {
                 cars.add(car);
             }
         } catch (SQLException sqlEx) {
-            System.out.println("Wrong connection in getCars " + sqlEx);// sqlEx.printStackTrace();
+            log.error("error connection or query ", sqlEx);
         }
         return new LinkedList(cars);
     }
@@ -79,8 +83,7 @@ public class H2CarRepository implements CarRepository {
     }
 
     @Override
-    public void saveCar(Car car
-    ) {
+    public void saveCar(Car car) {
         try (Connection con = DriverManager.getConnection(connect.getUrl(),
                 connect.getUser(), connect.getPassword())) {
             pstmt = con.prepareStatement("Insert into CAR Values(?,?,?,?,?");
@@ -90,26 +93,27 @@ public class H2CarRepository implements CarRepository {
             pstmt.setInt(4, car.getYear());
             pstmt.setLong(5, car.getMaker().getId());
             pstmt.executeQuery();
-
         } catch (SQLException ex) {
+            log.error("error connection or query ", ex);
         }
     }
 
     @Override
-    public void updateCar(Long id, Car car
-    ) {
+    public void updateCar(Car car) {
         try (Connection con = DriverManager.getConnection(connect.getUrl(),
                 connect.getUser(), connect.getPassword())) {
-            pstmt = con.prepareStatement("Update CAR set MODEL=? COLOR=? YEAR=? "
-                    + "ID_MAKER=? WHERE ID_CAR=?");
+            pstmt = con.prepareStatement("Update CAR set MODEL=?,COLOR=?,YEAR=?"
+                    + "WHERE ID_CAR=?");
             pstmt.setString(1, car.getModel());
             pstmt.setString(2, car.getColor());
             pstmt.setInt(3, car.getYear());
-            pstmt.setLong(4, car.getMaker().getId());
-            pstmt.setLong(5, id);
-            pstmt.executeQuery();
+            pstmt.setLong(4, car.getId());
+            pstmt.executeUpdate();
+
+            makerRep.updateMaker(car.getMaker().getId(), car.getMaker());
 
         } catch (SQLException ex) {
+            log.error("Update Car error", ex);
         }
     }
 }

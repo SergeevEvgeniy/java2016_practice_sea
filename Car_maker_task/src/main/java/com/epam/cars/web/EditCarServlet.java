@@ -41,7 +41,8 @@ public class EditCarServlet extends HttpServlet {
                 Integer.parseInt(req.getParameter("Car_Year_TB")),
                 req.getParameter("Car_Color_TB"));
 
-        repo.updateCar(Long.parseLong(req.getParameter("Id_H_TB")), car);
+        car.setId(Long.parseLong(req.getParameter("Id_H_TB")));
+        repo.updateCar(car);
 
         resp.sendRedirect("/Car_maker_task/list");
     }

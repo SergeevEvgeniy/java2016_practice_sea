@@ -54,7 +54,7 @@ public class MapCarRepository implements CarRepository {
     }
 
     @Override
-    public void updateCar(Long id, Car car) {
-        cars.put(id, car);
+    public void updateCar(Car car) {
+        cars.put(car.getId(), car);
     }
 }

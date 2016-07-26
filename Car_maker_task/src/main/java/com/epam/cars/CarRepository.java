@@ -11,5 +11,5 @@ public interface CarRepository {
 
     public Car getCar(Long id);
 
-    public void updateCar(Long id, Car car);
+    public void updateCar(Car car);
 }
