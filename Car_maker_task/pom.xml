@@ -66,6 +66,10 @@
                 <version>9.3.10.v20160621</version>
                 <configuration>
                     <war>${project.basedir}/target/Car_maker_task.war</war>
+                    <scanIntervalSeconds>10</scanIntervalSeconds> 
+                    <webApp> 
+                        <contextPath>/Car_maker_task</contextPath> 
+                    </webApp> 
                 </configuration>
             </plugin>
             <plugin>

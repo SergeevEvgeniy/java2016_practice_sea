@@ -1,10 +1,11 @@
 package com.epam.cars;
 
 import com.epam.cars.model.Maker;
+import java.util.List;
 
 public interface MakerRepository {
 
-    //public List<Maker> getMakers();
+    public List<Maker> getMakers();
 
     public void saveMaker(Maker maker);
 

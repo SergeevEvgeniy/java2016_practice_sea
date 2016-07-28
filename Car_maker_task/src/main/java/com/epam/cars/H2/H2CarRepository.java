@@ -52,7 +52,7 @@ public class H2CarRepository implements CarRepository {
             return toCar(rs);
 
         } catch (SQLException sqlEx) {
-            // sqlEx.printStackTrace();
+            log.error("error query getCar ", sqlEx);
         }
         return nullCar;
     }
@@ -70,9 +70,9 @@ public class H2CarRepository implements CarRepository {
                 cars.add(car);
             }
         } catch (SQLException sqlEx) {
-            log.error("error connection or query ", sqlEx);
+            log.error("error query getCars ", sqlEx);
         }
-        return new LinkedList(cars);
+        return cars;
     }
 
     private Car toCar(final ResultSet rs) throws SQLException {
@@ -84,15 +84,16 @@ public class H2CarRepository implements CarRepository {
 
     @Override
     public void saveCar(Car car) {
+        lastCarId = this.getCars().size();
         try (Connection con = DriverManager.getConnection(connect.getUrl(),
                 connect.getUser(), connect.getPassword())) {
-            pstmt = con.prepareStatement("Insert into CAR Values(?,?,?,?,?");
+            pstmt = con.prepareStatement("Insert into CAR Values(?,?,?,?,?)");
             pstmt.setLong(1, ++lastCarId);
             pstmt.setString(2, car.getModel());
             pstmt.setString(3, car.getColor());
             pstmt.setInt(4, car.getYear());
             pstmt.setLong(5, car.getMaker().getId());
-            pstmt.executeQuery();
+            pstmt.execute();
         } catch (SQLException ex) {
             log.error("error connection or query ", ex);
         }
@@ -102,16 +103,17 @@ public class H2CarRepository implements CarRepository {
     public void updateCar(Car car) {
         try (Connection con = DriverManager.getConnection(connect.getUrl(),
                 connect.getUser(), connect.getPassword())) {
-            pstmt = con.prepareStatement("Update CAR set MODEL=?,COLOR=?,YEAR=?"
+            pstmt = con.prepareStatement("Update CAR set MODEL=?,COLOR=?,YEAR=?,ID_MAKER=?"
                     + "WHERE ID_CAR=?");
             pstmt.setString(1, car.getModel());
             pstmt.setString(2, car.getColor());
             pstmt.setInt(3, car.getYear());
-            pstmt.setLong(4, car.getId());
+            pstmt.setLong(5, car.getId());
+            pstmt.setLong(4, car.getMaker().getId());
             pstmt.executeUpdate();
 
-            makerRep.updateMaker(car.getMaker().getId(), car.getMaker());
-
+            // makerRep.updateMaker(car.getMaker().getId(), car.getMaker()); 
+            //updates must be different 
         } catch (SQLException ex) {
             log.error("Update Car error", ex);
         }
