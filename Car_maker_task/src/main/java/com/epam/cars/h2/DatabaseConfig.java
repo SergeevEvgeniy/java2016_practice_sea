@@ -1,6 +1,6 @@
 package com.epam.cars.h2;
 
-public class ConnectionProvider {
+public class DatabaseConfig {
 
     private static final String url = "jdbc:h2:~/test";
     private static final String user = "root";

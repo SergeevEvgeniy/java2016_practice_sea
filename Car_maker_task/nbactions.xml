@@ -8,6 +8,7 @@
                 <packaging>ejb</packaging>
             </packagings>
             <goals>
+                <goal>clean</goal>
                 <goal>package</goal>
             </goals>
         </action>

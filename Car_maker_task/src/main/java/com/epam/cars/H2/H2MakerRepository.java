@@ -18,7 +18,7 @@ public class H2MakerRepository implements MakerRepository {
     private final Maker nullMaker = new Maker("name", "adress", 0);
     private long lastMakerId = 0;
 
-    private final ConnectionProvider connect = new ConnectionProvider();
+    private final DatabaseConfig connect = new DatabaseConfig();
     private static PreparedStatement pstmt;
 
     public static H2MakerRepository instance;

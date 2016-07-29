@@ -17,18 +17,17 @@ import org.slf4j.LoggerFactory;
 
 public class H2CarRepository implements CarRepository {
 
-    private final ConnectionProvider connect = new ConnectionProvider();
+    private final DatabaseConfig connect = new DatabaseConfig();
     private static PreparedStatement pstmt;
 
     public static H2CarRepository instance;
 
-    private long lastCarId = 0;
     private final MakerRepository makerRep = H2MakerRepository.getInstance();
 
     private final Maker nullMaker = new Maker("name", "adress", 0);
     private final Car nullCar = new Car(nullMaker, "model", 0, " color");
 
-    private static final Logger log = LoggerFactory.getLogger(H2MakerRepository.class.getName());
+    private static final Logger LOG = LoggerFactory.getLogger(H2MakerRepository.class.getName());
 
     public static synchronized H2CarRepository getInstance() {
         if (instance == null) {
@@ -52,7 +51,7 @@ public class H2CarRepository implements CarRepository {
             return toCar(rs);
 
         } catch (SQLException sqlEx) {
-            log.error("error query getCar ", sqlEx);
+            LOG.error("error query getCar ", sqlEx);
         }
         return nullCar;
     }
@@ -79,7 +78,7 @@ public class H2CarRepository implements CarRepository {
                 cars.add(car);
             }
         } catch (SQLException sqlEx) {
-            log.error("error query getCars ", sqlEx);
+            LOG.error("error query getCars ", sqlEx);
         }
         return cars;
     }
@@ -93,18 +92,16 @@ public class H2CarRepository implements CarRepository {
 
     @Override
     public void saveCar(Car car) {
-        lastCarId = this.getCars("").size();
         try (Connection con = DriverManager.getConnection(connect.getUrl(),
                 connect.getUser(), connect.getPassword())) {
-            pstmt = con.prepareStatement("Insert into CAR Values(?,?,?,?,?)");
-            pstmt.setLong(1, ++lastCarId);
-            pstmt.setString(2, car.getModel());
-            pstmt.setString(3, car.getColor());
-            pstmt.setInt(4, car.getYear());
-            pstmt.setLong(5, car.getMaker().getId());
+            pstmt = con.prepareStatement("Insert into CAR Values(?,?,?,?)");
+            pstmt.setString(1, car.getModel());
+            pstmt.setString(2, car.getColor());
+            pstmt.setInt(3, car.getYear());
+            pstmt.setLong(4, car.getMaker().getId());
             pstmt.execute();
         } catch (SQLException ex) {
-            log.error("error connection or query ", ex);
+            LOG.error("error connection or query ", ex);
         }
     }
 
@@ -124,7 +121,7 @@ public class H2CarRepository implements CarRepository {
             // makerRep.updateMaker(car.getMaker().getId(), car.getMaker()); 
             //updates must be different 
         } catch (SQLException ex) {
-            log.error("Update Car error", ex);
+            LOG.error("Update Car error", ex);
         }
     }
 }
