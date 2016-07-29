@@ -58,12 +58,21 @@ public class H2CarRepository implements CarRepository {
     }
 
     @Override
-    public List<Car> getCars() {
+    public List<Car> getCars(String search) {
         List<Car> cars = new LinkedList<>();
         try (Connection con = DriverManager.getConnection(connect.getUrl(),
                 connect.getUser(), connect.getPassword());
-                Statement stmt = con.createStatement();
-                ResultSet rs = stmt.executeQuery("select * from Public.CAR")) {
+                Statement stmt = con.createStatement()) {
+
+            ResultSet rs;
+
+            if ("".equals(search)) {
+                rs = stmt.executeQuery("select * from Public.CAR");
+            } else {
+                pstmt = con.prepareStatement("select * from CAR WHERE MODEL=?");
+                pstmt.setString(1, search);
+                rs = pstmt.executeQuery();
+            }
 
             while (rs.next()) {
                 Car car = toCar(rs);
@@ -84,7 +93,7 @@ public class H2CarRepository implements CarRepository {
 
     @Override
     public void saveCar(Car car) {
-        lastCarId = this.getCars().size();
+        lastCarId = this.getCars("").size();
         try (Connection con = DriverManager.getConnection(connect.getUrl(),
                 connect.getUser(), connect.getPassword())) {
             pstmt = con.prepareStatement("Insert into CAR Values(?,?,?,?,?)");

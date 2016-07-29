@@ -38,7 +38,7 @@ public class MapCarRepository implements CarRepository {
     }
 
     @Override
-    public List<Car> getCars() {
+    public List<Car> getCars(String search) {
         return new ArrayList(cars.values());
     }
 

@@ -9,8 +9,8 @@ public class CarService {
     
     private final CarRepository repo = H2CarRepository.getInstance();
     
-    public List<Car> getCars() {
-        return repo.getCars();
+    public List<Car> getCars(String search) {
+        return repo.getCars(search);
     }
     
     public void saveCar(Car car) {

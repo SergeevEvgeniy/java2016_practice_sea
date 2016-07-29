@@ -21,7 +21,7 @@ public class ListCarsServlet extends HttpServlet {
             final HttpServletResponse resp)
             throws ServletException, IOException {
         req.setAttribute(MAKERS, makerS.getMakers());
-        req.setAttribute(CAR, carS.getCars());
+        req.setAttribute(CAR, carS.getCars(""));
         req.getRequestDispatcher("list.jsp").forward(req, resp);
 
     }
