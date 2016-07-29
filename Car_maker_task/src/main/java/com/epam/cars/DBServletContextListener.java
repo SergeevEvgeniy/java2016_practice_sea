@@ -1,10 +1,15 @@
 package com.epam.cars;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 import org.slf4j.LoggerFactory;
@@ -16,34 +21,57 @@ public class DBServletContextListener
     private static final String USER = "root";
     private static final String PASSWORD = "root";
 
-    private static final org.slf4j.Logger LOG = LoggerFactory.getLogger(DBServletContextListener.class.getName());
+    private static final org.slf4j.Logger LOG = LoggerFactory.getLogger(DBServletContextListener.class);
 
     private static final String CREATETABLES = "create_tables.sql";
     private static final String INITTABLES = "insert_def_values.sql";
 
     @Override
     public void contextInitialized(ServletContextEvent arg0) {
-        System.out.println("enter with create table");
-        tablesInit(CREATETABLES);
-        System.out.println("enter with inserting");
-        tablesInit(INITTABLES);
+        try {
+            Class.forName("org.h2.Driver");
+            if (executeScript(CREATETABLES)) {
+                if (executeScript(INITTABLES)) {
+                    LOG.info("db creation scripts was successfully executed");
+                } else {
+                    LOG.info("tables created whithout any data");
+                }
+            } else {
+                LOG.info("db already exist");
+            }
+        } catch (ClassNotFoundException ex) {
+            LOG.error("Can't load db driver", ex);
+            throw new RuntimeException(ex);
+        }
     }
 
-    private void tablesInit(String filename) {
+    /**
+     * execute sql-script from resurce file
+     *
+     * @param filename resurce filename with sql-script
+     * @return true if script was successfully executed, false otherwise
+     */
+    private boolean executeScript(String filename) {
         try (Connection con = DriverManager.getConnection(URL, USER, PASSWORD);
                 Statement stmt = con.createStatement()) {
 
-            byte[] b = null;
-            System.class.getResourceAsStream(filename).read(b);
+            InputStream is = getClass().getClassLoader().getResourceAsStream(filename);
+            BufferedReader br = new BufferedReader(new InputStreamReader(is));
 
-            String query = new String(b);
+            String readString;
+            String query = "";
+
+            while ((readString = br.readLine()) != null) {
+                query += readString;
+            }
             stmt.executeUpdate(query);
-
+            return true;
         } catch (SQLException sqlEx) {
             LOG.error("error connection in ContextListener", sqlEx);
         } catch (IOException ex) {
             LOG.error("error of reading sql-query ", ex);
         }
+        return false;
     }
 
     @Override
