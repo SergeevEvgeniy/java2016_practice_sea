@@ -16,7 +16,7 @@
                 </li>
             </c:forEach>
         </ul>
-        <form  action="SearchServlet.java" >
+        <form  action="search" >
             <p> 
                 <Input name="Back_B" type="submit" value="Back to Main" />  
             </p>

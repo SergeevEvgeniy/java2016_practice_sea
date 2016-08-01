@@ -8,20 +8,19 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
+import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class DBServletContextListener
+public class DBDeployListener
         implements ServletContextListener {
 
     private static final String URL = "jdbc:h2:~/test";
     private static final String USER = "root";
     private static final String PASSWORD = "root";
 
-    private static final org.slf4j.Logger LOG = LoggerFactory.getLogger(DBServletContextListener.class);
+    private static final Logger LOG = LoggerFactory.getLogger(DBDeployListener.class);
 
     private static final String CREATETABLES = "create_tables.sql";
     private static final String INITTABLES = "insert_def_values.sql";
@@ -67,7 +66,7 @@ public class DBServletContextListener
             stmt.executeUpdate(query);
             return true;
         } catch (SQLException sqlEx) {
-            LOG.error("error connection in ContextListener", sqlEx);
+            LOG.error("error executing script");
         } catch (IOException ex) {
             LOG.error("error of reading sql-query ", ex);
         }
