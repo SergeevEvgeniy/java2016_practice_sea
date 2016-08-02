@@ -14,6 +14,7 @@ public class LoginServlet extends HttpServlet {
 
     private final String userID = "admin";
     private final String password = "admin";
+    private final String userName = "Sea";
 
     @Override
     protected void doPost(HttpServletRequest request,
@@ -38,7 +39,7 @@ public class LoginServlet extends HttpServlet {
                 }
             }
 
-            session.setAttribute("user", "Sea");
+            session.setAttribute("user", userName);
             session.setAttribute("sessionID", sessionID);
 
             response.addCookie(userName);

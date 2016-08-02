@@ -1,5 +1,6 @@
 package com.epam.cars;
 
+import com.epam.cars.h2.DatabaseConfig;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -16,9 +17,7 @@ import org.slf4j.LoggerFactory;
 public class DBDeployListener
         implements ServletContextListener {
 
-    private static final String URL = "jdbc:h2:~/test";
-    private static final String USER = "root";
-    private static final String PASSWORD = "root";
+    private final DatabaseConfig connect = new DatabaseConfig();
 
     private static final Logger LOG = LoggerFactory.getLogger(DBDeployListener.class);
 
@@ -51,19 +50,11 @@ public class DBDeployListener
      * @return true if script was successfully executed, false otherwise
      */
     private boolean executeScript(String filename) {
-        try (Connection con = DriverManager.getConnection(URL, USER, PASSWORD);
+        try (Connection con = DriverManager.getConnection(connect.getUrl(),
+                connect.getUser(), connect.getPassword());
                 Statement stmt = con.createStatement()) {
 
-            InputStream is = getClass().getClassLoader().getResourceAsStream(filename);
-            BufferedReader br = new BufferedReader(new InputStreamReader(is));
-
-            String readString;
-            String query = "";
-
-            while ((readString = br.readLine()) != null) {
-                query += readString;
-            }
-            stmt.executeUpdate(query);
+            stmt.executeUpdate(readFileAsText(filename));
             return true;
         } catch (SQLException sqlEx) {
             LOG.error("error executing script");
@@ -71,6 +62,19 @@ public class DBDeployListener
             LOG.error("error of reading sql-query ", ex);
         }
         return false;
+    }
+
+    private String readFileAsText(String filename) throws IOException {
+        InputStream is = getClass().getClassLoader().getResourceAsStream(filename);
+        BufferedReader br = new BufferedReader(new InputStreamReader(is));
+
+        String readString;
+        String query = "";
+
+        while ((readString = br.readLine()) != null) {
+            query += readString;
+        }
+        return query;
     }
 
     @Override

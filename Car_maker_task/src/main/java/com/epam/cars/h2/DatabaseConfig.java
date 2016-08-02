@@ -15,6 +15,6 @@ public class DatabaseConfig {
     }
 
     public String getUrl() {
-        return url;
+        return url; 
     }
 }

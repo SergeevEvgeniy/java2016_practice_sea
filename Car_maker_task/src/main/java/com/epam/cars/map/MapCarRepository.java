@@ -44,6 +44,7 @@ public class MapCarRepository implements CarRepository {
 
     @Override
     public void saveCar(final Car car) {
+        lastCarId = cars.size();
         car.setId(++lastCarId);
         cars.put(lastCarId, car);
     }
