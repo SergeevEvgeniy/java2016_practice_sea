@@ -1,4 +1,6 @@
 <%@page contentType="text/html" pageEncoding="windows-1251"%>
+<%@ page isELIgnored="false"%>
+<%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%> 
 <html>
     <head>
         <title>Create a car</title>
@@ -7,14 +9,12 @@
         <h1>Create car</h1>
         <form action=list method=post>
             <h2>Concern</h2>
-            <p> Name
-                <input name="Concern_Name_TB" type="text"/>
-            </p>
-            <p> Adres 
-                <input name="Concern_Adres_TB" type="text"/>
-            </p>
-            <p> FoundYear 
-                <input name="Concern_FoundYear_TB" type="text"/>
+            <p> Concern
+                <select name = "concerns">
+                    <c:forEach var ="maker" items="${makers}">
+                        <option value="${maker.id}">${maker.name}</option>
+                    </c:forEach>
+                </select>
             </p>
 
             <h2>Car</h2>

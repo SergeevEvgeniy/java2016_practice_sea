@@ -9,14 +9,14 @@
         <ul>
             <c:forEach var="car" items="${cars}">
                 <li>
-                    <a href="/Car_maker_task/edit?Id=${car.key}">
-                        <c:out value="${car.value.maker.name} ${car.value.model}
-                               ${car.value.year} ${car.value.color}"/>
+                    <a href="/Car_maker_task/edit?Id=${car.getId()}">
+                        <c:out value="${car.maker.name} 
+                               ${car.model} ${car.year} ${car.color}"/>
                     </a>
                 </li>
             </c:forEach>
         </ul>
-        <form  action="SearchServlet.java" >
+        <form  action="search" >
             <p> 
                 <Input name="Back_B" type="submit" value="Back to Main" />  
             </p>

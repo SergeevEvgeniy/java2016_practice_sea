@@ -1,15 +1,15 @@
 package com.epam.cars;
 
 import com.epam.cars.model.Car;
-import java.util.Map;
+import java.util.List;
 
 public interface CarRepository {
 
-    public Map<String, Car> getCars();
+    public List<Car> getCars(String search);
 
     public void saveCar(Car car);
-    
-    public Car getCar(String id);
-    
-    public void updateCar(String id,Car car);
+
+    public Car getCar(Long id);
+
+    public void updateCar(Car car);
 }

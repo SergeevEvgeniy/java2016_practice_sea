@@ -2,6 +2,7 @@ package com.epam.cars.model;
 
 public class Maker {
 
+    private long id;
     private final String name;
     private final String adress;
     private final int foundYear;
@@ -22,5 +23,13 @@ public class Maker {
 
     public int getFoundYear() {
         return this.foundYear;
+    }
+
+    public long getId() {
+        return this.id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
     }
 }

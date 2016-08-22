@@ -1,6 +1,6 @@
 package com.epam.cars.web;
 
-import com.epam.cars.Searcher;
+import com.epam.cars.service.CarService;
 import java.io.IOException;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -9,6 +9,8 @@ import javax.servlet.http.HttpServletResponse;
 
 public class SearchServlet extends HttpServlet {
 
+    private final CarService carS = new CarService();
+    
     @Override
     protected void doGet(final HttpServletRequest req,
             final HttpServletResponse resp)
@@ -22,7 +24,7 @@ public class SearchServlet extends HttpServlet {
             final HttpServletResponse resp)
             throws ServletException, IOException {
 
-        req.setAttribute("cars", new Searcher().searchCar(req.getParameter("Search_TB")));
+        req.setAttribute("cars", carS.getCars(req.getParameter("Search_TB")));
         req.getRequestDispatcher("list.jsp").forward(req, resp);
     }
 }
