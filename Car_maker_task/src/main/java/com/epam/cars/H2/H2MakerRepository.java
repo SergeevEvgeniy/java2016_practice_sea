@@ -12,6 +12,7 @@ import java.util.LinkedList;
 import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 public class H2MakerRepository implements MakerRepository {
@@ -26,7 +27,7 @@ public class H2MakerRepository implements MakerRepository {
 
     private static final Logger log = LoggerFactory.getLogger(H2MakerRepository.class.getName());
 
-    private JdbcTemplate jdbcTemplate;
+    private final JdbcTemplate jdbcTemplate = new JdbcTemplate(connect.getDataSource());
 
     public static synchronized H2MakerRepository getInstance() {
         if (instance == null) {
@@ -47,17 +48,11 @@ public class H2MakerRepository implements MakerRepository {
 
     @Override
     public void saveMaker(Maker maker) {
-        lastMakerId = this.jdbcTemplate.queryForObject("select * from Public.MAKER", Integer.class);
-        try (Connection con = DriverManager.getConnection(connect.getUrl(),
-                connect.getUser(), connect.getPassword())) {
-            pstmt = con.prepareStatement("Insert into MAKER Values(?,?,?,?)");
-            pstmt.setString(2, maker.getName());
-            pstmt.setString(3, maker.getAdress());
-            pstmt.setInt(4, maker.getFoundYear());
-            pstmt.setLong(1, ++lastMakerId);
-            pstmt.executeQuery();
-
-        } catch (SQLException ex) {
+        lastMakerId = this.jdbcTemplate.queryForObject("select max(id_maker) from Public.MAKER", Long.class);
+        try {
+            jdbcTemplate.update("Insert into MAKER Values(?,?,?,?)",
+                    ++lastMakerId, maker.getName(), maker.getAdress(), maker.getFoundYear());
+        } catch (DataAccessException ex) {
             log.error("error query saveMaker ", ex);
         }
     }
@@ -83,17 +78,11 @@ public class H2MakerRepository implements MakerRepository {
     @Override
     public void updateMaker(Long id, Maker maker
     ) {
-        try (Connection con = DriverManager.getConnection(connect.getUrl(),
-                connect.getUser(), connect.getPassword())) {
-            pstmt = con.prepareStatement("Update MAKER set NAME=?,ADRESS=?,"
-                    + "FOUND_YEAR=? WHERE ID_MAKER=?");
-            pstmt.setString(1, maker.getName());
-            pstmt.setString(2, maker.getAdress());
-            pstmt.setInt(3, maker.getFoundYear());
-            pstmt.setLong(4, id);
-            pstmt.executeUpdate();
+        try {
+            jdbcTemplate.update("Update MAKER set NAME=?,ADRESS=?,FOUND_YEAR=? WHERE ID_MAKER=?",
+                    maker.getName(), maker.getAdress(), maker.getFoundYear(), id);
 
-        } catch (SQLException ex) {
+        } catch (DataAccessException ex) {
             log.error("Update Maker error ", ex);
         }
     }

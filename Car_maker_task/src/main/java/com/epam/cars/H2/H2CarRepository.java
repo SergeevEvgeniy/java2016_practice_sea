@@ -14,6 +14,8 @@ import java.util.LinkedList;
 import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.dao.DataAccessException;
+import org.springframework.jdbc.core.JdbcTemplate;
 
 public class H2CarRepository implements CarRepository {
 
@@ -28,6 +30,10 @@ public class H2CarRepository implements CarRepository {
     private final Car nullCar = new Car(nullMaker, "model", 0, " color");
 
     private static final Logger LOG = LoggerFactory.getLogger(H2MakerRepository.class.getName());
+
+    private final JdbcTemplate jdbcTemplate = new JdbcTemplate(connect.getDataSource());
+
+    private long lastCarId = 15;
 
     public static synchronized H2CarRepository getInstance() {
         if (instance == null) {
@@ -92,35 +98,23 @@ public class H2CarRepository implements CarRepository {
 
     @Override
     public void saveCar(Car car) {
-        try (Connection con = DriverManager.getConnection(connect.getUrl(),
-                connect.getUser(), connect.getPassword())) {
-            pstmt = con.prepareStatement("Insert into CAR Values(?,?,?,?)");
-            pstmt.setString(1, car.getModel());
-            pstmt.setString(2, car.getColor());
-            pstmt.setInt(3, car.getYear());
-            pstmt.setLong(4, car.getMaker().getId());
-            pstmt.execute();
-        } catch (SQLException ex) {
+        try {
+            jdbcTemplate.update("Insert into CAR Values(?,?,?,?,?)",
+                    ++lastCarId, car.getModel(), car.getColor(), car.getYear(), car.getMaker().getId());
+        } catch (DataAccessException ex) {
             LOG.error("error connection or query ", ex);
         }
     }
 
     @Override
     public void updateCar(Car car) {
-        try (Connection con = DriverManager.getConnection(connect.getUrl(),
-                connect.getUser(), connect.getPassword())) {
-            pstmt = con.prepareStatement("Update CAR set MODEL=?,COLOR=?,YEAR=?,ID_MAKER=?"
-                    + "WHERE ID_CAR=?");
-            pstmt.setString(1, car.getModel());
-            pstmt.setString(2, car.getColor());
-            pstmt.setInt(3, car.getYear());
-            pstmt.setLong(5, car.getId());
-            pstmt.setLong(4, car.getMaker().getId());
-            pstmt.executeUpdate();
+        try {
+            jdbcTemplate.update("Update CAR set MODEL=?,COLOR=?,YEAR=?,ID_MAKER=? WHERE ID_CAR=?",
+                    car.getModel(), car.getColor(), car.getYear(), car.getMaker().getId(), car.getId());
 
             // makerRep.updateMaker(car.getMaker().getId(), car.getMaker()); 
             //updates must be different 
-        } catch (SQLException ex) {
+        } catch (DataAccessException ex) {
             LOG.error("Update Car error", ex);
         }
     }
