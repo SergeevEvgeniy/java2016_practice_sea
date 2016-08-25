@@ -12,6 +12,10 @@
     <listener>
         <listener-class> com.epam.cars.DBDeployListener</listener-class>
     </listener>
+    
+    <listener>
+        <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+    </listener>
  
     <filter>
         <filter-name>RequestLoggingFilter</filter-name>

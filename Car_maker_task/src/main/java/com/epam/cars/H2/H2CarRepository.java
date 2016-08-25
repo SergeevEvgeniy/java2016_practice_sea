@@ -20,7 +20,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import org.springframework.stereotype.Repository;
 
+@Repository
 public class H2CarRepository implements CarRepository {
 
     private final DatabaseConfig connect = new DatabaseConfig();
@@ -124,7 +126,7 @@ public class H2CarRepository implements CarRepository {
     @Override
     public void updateCar(Car car) {
         try {
-            String SQL = "Update CAR set MODEL=:model, COLOR=:color, YEAR=:year,ID_MAKER=:id_maker WHERE ID_CAR=id";
+            String SQL = "Update CAR set MODEL=:model, COLOR=:color, YEAR=:year, ID_MAKER=:id_maker WHERE ID_CAR=id";
             Map namedParameters = new HashMap();
             namedParameters.put("model", car.getModel());
             namedParameters.put("color", car.getColor());
