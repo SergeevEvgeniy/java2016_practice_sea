@@ -20,14 +20,4 @@ public class DatabaseConfig {
     public String getUrl() {
         return url;
     }
-
-    public DataSource getDataSource() {
-        SimpleDriverDataSource dataSource = new SimpleDriverDataSource();
-        dataSource.setDriverClass(org.h2.Driver.class);
-        dataSource.setUsername(user);
-        dataSource.setUrl(url);
-        dataSource.setPassword(password);
-
-        return dataSource;
-    }
 }

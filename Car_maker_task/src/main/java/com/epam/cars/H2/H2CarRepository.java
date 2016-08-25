@@ -10,12 +10,16 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 
 public class H2CarRepository implements CarRepository {
 
@@ -31,9 +35,12 @@ public class H2CarRepository implements CarRepository {
 
     private static final Logger LOG = LoggerFactory.getLogger(H2MakerRepository.class.getName());
 
-    private final JdbcTemplate jdbcTemplate = new JdbcTemplate(connect.getDataSource());
+    @Autowired
+    private JdbcTemplate jdbcTemplate;
+    @Autowired
+    private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
-    private long lastCarId = 15;
+    private long lastCarId = 0;
 
     public static synchronized H2CarRepository getInstance() {
         if (instance == null) {
@@ -98,9 +105,17 @@ public class H2CarRepository implements CarRepository {
 
     @Override
     public void saveCar(Car car) {
+        lastCarId = this.jdbcTemplate.queryForObject("select max(id_car) from Public.CAR", Long.class);
         try {
-            jdbcTemplate.update("Insert into CAR Values(?,?,?,?,?)",
-                    ++lastCarId, car.getModel(), car.getColor(), car.getYear(), car.getMaker().getId());
+            String SQL = "Insert into CAR Values(:id, :model, :color, :year, :id_maker)";
+            Map namedParameters = new HashMap();
+            namedParameters.put("model", car.getModel());
+            namedParameters.put("color", car.getColor());
+            namedParameters.put("year", car.getYear());
+            namedParameters.put("id_maker", car.getMaker().getId());
+            namedParameters.put("id", ++lastCarId);
+            namedParameterJdbcTemplate.update(SQL, namedParameters);
+
         } catch (DataAccessException ex) {
             LOG.error("error connection or query ", ex);
         }
@@ -109,8 +124,14 @@ public class H2CarRepository implements CarRepository {
     @Override
     public void updateCar(Car car) {
         try {
-            jdbcTemplate.update("Update CAR set MODEL=?,COLOR=?,YEAR=?,ID_MAKER=? WHERE ID_CAR=?",
-                    car.getModel(), car.getColor(), car.getYear(), car.getMaker().getId(), car.getId());
+            String SQL = "Update CAR set MODEL=:model, COLOR=:color, YEAR=:year,ID_MAKER=:id_maker WHERE ID_CAR=id";
+            Map namedParameters = new HashMap();
+            namedParameters.put("model", car.getModel());
+            namedParameters.put("color", car.getColor());
+            namedParameters.put("year", car.getYear());
+            namedParameters.put("id_maker", car.getMaker().getId());
+            namedParameters.put("id", car.getId());
+            namedParameterJdbcTemplate.update(SQL, namedParameters);
 
             // makerRep.updateMaker(car.getMaker().getId(), car.getMaker()); 
             //updates must be different 

@@ -8,12 +8,16 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 
 public class H2MakerRepository implements MakerRepository {
 
@@ -27,7 +31,10 @@ public class H2MakerRepository implements MakerRepository {
 
     private static final Logger log = LoggerFactory.getLogger(H2MakerRepository.class.getName());
 
-    private final JdbcTemplate jdbcTemplate = new JdbcTemplate(connect.getDataSource());
+    @Autowired
+    private JdbcTemplate jdbcTemplate;
+    @Autowired
+    private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
     public static synchronized H2MakerRepository getInstance() {
         if (instance == null) {
@@ -50,8 +57,13 @@ public class H2MakerRepository implements MakerRepository {
     public void saveMaker(Maker maker) {
         lastMakerId = this.jdbcTemplate.queryForObject("select max(id_maker) from Public.MAKER", Long.class);
         try {
-            jdbcTemplate.update("Insert into MAKER Values(?,?,?,?)",
-                    ++lastMakerId, maker.getName(), maker.getAdress(), maker.getFoundYear());
+            String SQL = "Insert into MAKER Values(:id, :name, :adress, :year)";
+            Map namedParameters = new HashMap();
+            namedParameters.put("id", ++lastMakerId);
+            namedParameters.put("name", maker.getName());
+            namedParameters.put("adress", maker.getAdress());
+            namedParameters.put("year", maker.getFoundYear());
+            namedParameterJdbcTemplate.update(SQL, namedParameters);
         } catch (DataAccessException ex) {
             log.error("error query saveMaker ", ex);
         }
@@ -79,8 +91,13 @@ public class H2MakerRepository implements MakerRepository {
     public void updateMaker(Long id, Maker maker
     ) {
         try {
-            jdbcTemplate.update("Update MAKER set NAME=?,ADRESS=?,FOUND_YEAR=? WHERE ID_MAKER=?",
-                    maker.getName(), maker.getAdress(), maker.getFoundYear(), id);
+            String SQL = "Update MAKER set NAME=:name, ADRESS=:adress, FOUND_YEAR=:year WHERE ID_MAKER=:id";
+            Map namedParameters = new HashMap();
+            namedParameters.put("id", id);
+            namedParameters.put("name", maker.getName());
+            namedParameters.put("adress", maker.getAdress());
+            namedParameters.put("year", maker.getFoundYear());
+            namedParameterJdbcTemplate.update(SQL, namedParameters);
 
         } catch (DataAccessException ex) {
             log.error("Update Maker error ", ex);
