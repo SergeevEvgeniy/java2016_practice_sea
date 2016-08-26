@@ -5,19 +5,22 @@ import com.epam.cars.service.CarService;
 import com.epam.cars.service.MakerService;
 import java.io.IOException;
 import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 
-public class ListCarsServlet extends HttpServlet {
+@Controller
+public class ListCarsServlet {
 
     private static final String MAKERS = "makers";
     private static final String CAR = "cars";
     private final CarService carS = new CarService();
     private final MakerService makerS = new MakerService();
 
-    @Override
-    protected void doGet(final HttpServletRequest req,
+    @RequestMapping(value = "/list", method = RequestMethod.GET)
+    public void doGet(final HttpServletRequest req,
             final HttpServletResponse resp)
             throws ServletException, IOException {
         req.setAttribute(MAKERS, makerS.getMakers());
@@ -26,8 +29,8 @@ public class ListCarsServlet extends HttpServlet {
 
     }
 
-    @Override
-    protected void doPost(final HttpServletRequest req,
+    @RequestMapping(value = "/list", method = RequestMethod.POST)
+    public void doPost(final HttpServletRequest req,
             final HttpServletResponse resp)
             throws ServletException, IOException {
 
