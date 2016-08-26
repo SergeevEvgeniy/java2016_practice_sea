@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 @Controller
 public class LogoutServlet {
 
-    @RequestMapping(value = "/LogoutServlet", method = RequestMethod.GET)
+    @RequestMapping(value = "/LogoutServlet", method = RequestMethod.POST)
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         response.setContentType("text/html");
         HttpSession session = request.getSession(false);

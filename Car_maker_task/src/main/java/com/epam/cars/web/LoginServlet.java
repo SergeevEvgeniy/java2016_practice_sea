@@ -17,7 +17,7 @@ public class LoginServlet {
     private final String userID = "admin";
     private final String password = "admin";
 
-    @RequestMapping(value = "/LoginServlet", method = RequestMethod.GET)
+    @RequestMapping(value = "/LoginServlet", method = RequestMethod.POST)
     public void doPost(HttpServletRequest req,
             HttpServletResponse resp) throws ServletException, IOException {
 
