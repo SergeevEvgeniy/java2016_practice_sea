@@ -5,6 +5,7 @@ import java.io.IOException;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -12,7 +13,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 @Controller
 public class SearchServlet {
 
-    private final CarService carS = new CarService();
+    @Autowired
+    private CarService carService;
 
     @RequestMapping(value = "/search", method = RequestMethod.GET)
     public void doGet(final HttpServletRequest req,
@@ -27,7 +29,7 @@ public class SearchServlet {
             final HttpServletResponse resp)
             throws ServletException, IOException {
 
-        req.setAttribute("cars", carS.getCars(req.getParameter("Search_TB")));
+        req.setAttribute("cars", carService.getCarsByModel(req.getParameter("Search_TB")));
         req.getRequestDispatcher("list.jsp").forward(req, resp);
     }
 }

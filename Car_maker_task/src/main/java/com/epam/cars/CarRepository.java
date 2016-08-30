@@ -5,7 +5,9 @@ import java.util.List;
 
 public interface CarRepository {
 
-    public List<Car> getCars(String search);
+    public List<Car> getCars();
+    
+    public List<Car> getCarsByModel(String search);
 
     public void saveCar(Car car);
 

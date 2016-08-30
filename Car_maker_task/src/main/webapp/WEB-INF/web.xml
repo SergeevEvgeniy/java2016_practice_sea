@@ -10,13 +10,13 @@
     </welcome-file-list>
  
     <listener>
-        <listener-class> com.epam.cars.DBDeployListener</listener-class>
+        <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
     </listener>
     
     <listener>
-        <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+        <listener-class> com.epam.cars.DBDeployListener</listener-class>
     </listener>
- 
+    
     <filter>
         <filter-name>RequestLoggingFilter</filter-name>
         <filter-class>com.epam.cars.filters.RequestLoggingFilter</filter-class>
