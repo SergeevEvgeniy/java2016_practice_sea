@@ -1,5 +1,6 @@
 <html>
     <body>
+        <jsp:include page="joint.jsp" flush="true"/>
         <h2>What to look for?</h2>
         <form method=Post action="search" >
             <p> Search 
