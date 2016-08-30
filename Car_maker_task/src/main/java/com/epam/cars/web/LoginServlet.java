@@ -2,35 +2,36 @@ package com.epam.cars.web;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 
-public class LoginServlet extends HttpServlet {
+@Controller
+public class LoginServlet {
 
     private final String userID = "admin";
     private final String password = "admin";
-    private final String userName = "Sea";
 
-    @Override
-    protected void doPost(HttpServletRequest request,
-            HttpServletResponse response) throws ServletException, IOException {
+    @RequestMapping(value = "/LoginServlet", method = RequestMethod.POST)
+    public void doPost(HttpServletRequest req,
+            HttpServletResponse resp) throws ServletException, IOException {
 
-        String user = request.getParameter("user");
-        String pwd = request.getParameter("pwd");
+        String user = req.getParameter("user");
+        String pwd = req.getParameter("pwd");
 
         if (userID.equals(user) && password.equals(pwd)) {
-            HttpSession session = request.getSession();
+            HttpSession session = req.getSession();
             session.setMaxInactiveInterval(30 * 60);
             Cookie userName = new Cookie("user", user);
             userName.setMaxAge(30 * 60);
 
             String sessionID = null;
-            Cookie[] cookies = request.getCookies();
+            Cookie[] cookies = req.getCookies();
             if (cookies != null) {
                 for (Cookie cookie : cookies) {
                     if (cookie.getName().equals("JSESSIONID")) {
@@ -42,14 +43,13 @@ public class LoginServlet extends HttpServlet {
             session.setAttribute("user", userName);
             session.setAttribute("sessionID", sessionID);
 
-            response.addCookie(userName);
-            response.sendRedirect("LoginSuccess.jsp");
+            resp.addCookie(userName);
+            resp.sendRedirect("LoginSuccess.jsp");
 
         } else {
-            RequestDispatcher rd = getServletContext().getRequestDispatcher("/login.html");
-            PrintWriter out = response.getWriter();
+            PrintWriter out = resp.getWriter();
             out.println("<font color=red>User name or password is wrong.</font>");
-            rd.include(request, response);
+            req.getRequestDispatcher("/login.html").forward(req, resp);
         }
     }
 }

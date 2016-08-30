@@ -1,0 +1,27 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+	http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+	http://www.springframework.org/schema/context
+	http://www.springframework.org/schema/context/spring-context-2.5.xsd">
+
+    <context:annotation-config />
+  
+    <context:component-scan base-package="com.epam.cars"/>
+           
+    <bean class=" org.springframework.jdbc.datasource.SimpleDriverDataSource" id="dataSource">
+        <property name="url" value="jdbc:h2:~/test"></property>
+        <property name="username" value="root"></property>
+        <property name="password" value="root"></property>
+        <property name="driverClass" value="org.h2.Driver"></property>
+    </bean>
+  
+    <bean class="org.springframework.jdbc.core.JdbcTemplate" id="JdbcTemplate">
+        <property name="dataSource" ref="dataSource"></property>
+    </bean>
+  
+    <bean class="org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate" id="namedParameterJdbcTemplate">
+        <constructor-arg ref="dataSource"></constructor-arg>            
+    </bean>    
+</beans>

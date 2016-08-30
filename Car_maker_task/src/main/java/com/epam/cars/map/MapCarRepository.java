@@ -38,7 +38,18 @@ public class MapCarRepository implements CarRepository {
     }
 
     @Override
-    public List<Car> getCars(String search) {
+    public List<Car> getCarsByModel(String search) {
+        List<Car> matchList = new ArrayList();
+        for (Map.Entry<Long, Car> entry : cars.entrySet()) {
+            if (entry.getValue().getModel().equals(search)) {
+                matchList.add(entry.getValue());
+            }
+        }
+        return matchList;
+    }
+
+    @Override
+    public List<Car> getCars() {
         return new ArrayList(cars.values());
     }
 
