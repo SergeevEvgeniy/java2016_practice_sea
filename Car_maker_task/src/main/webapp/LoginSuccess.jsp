@@ -11,7 +11,7 @@
         <br>
         <a href="search">Search Page</a>
         <br>
-        <form action="LogoutServlet" method="post">
+        <form action="LogoutController" method="post">
             <input type="submit" value="Logout" >
         </form>
     </body>

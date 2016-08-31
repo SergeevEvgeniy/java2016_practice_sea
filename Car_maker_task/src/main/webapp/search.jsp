@@ -1,6 +1,6 @@
 <html>
     <body>
-        <jsp:include page="joint.jsp" flush="true"/>
+        <jsp:include page="joint.jsp"/>
         <h2>What to look for?</h2>
         <form method=Post action="search" >
             <p> Search 
@@ -17,9 +17,6 @@
             <Input name="List_B" type="submit" value="List" />  
         </form>
 
-        <br>
-        <form action="LogoutServlet" method="post">
-            <input type="submit" value="Logout" >
-        </form>
+        <jsp:include page="logoutField.jsp"/>        
     </body>
 </html>

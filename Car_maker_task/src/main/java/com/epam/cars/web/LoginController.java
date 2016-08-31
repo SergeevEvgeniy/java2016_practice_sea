@@ -17,7 +17,7 @@ public class LoginController {
     private final String userID = "admin";
     private final String password = "admin";
 
-    @RequestMapping(value = "/LoginServlet", method = RequestMethod.POST)
+    @RequestMapping(value = "/LoginController", method = RequestMethod.POST)
     public void doPost(HttpServletRequest req,
             HttpServletResponse resp) throws ServletException, IOException {
 
@@ -40,7 +40,7 @@ public class LoginController {
                 }
             }
 
-            session.setAttribute("user", userName);
+            session.setAttribute("user", user);
             session.setAttribute("sessionID", sessionID);
 
             resp.addCookie(userName);
