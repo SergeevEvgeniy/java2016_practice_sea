@@ -21,8 +21,6 @@ public class H2MakerRepository implements MakerRepository {
 
     private long lastMakerId = 0;
 
-    public static H2MakerRepository instance;
-    
     private final Maker nullMaker = new Maker("name", "adress", 0);
 
     private static final Logger log = LoggerFactory.getLogger(H2MakerRepository.class.getName());
@@ -31,14 +29,7 @@ public class H2MakerRepository implements MakerRepository {
     private JdbcTemplate jdbcTemplate;
     @Autowired
     private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
-
-    public static synchronized H2MakerRepository getInstance() {
-        if (instance == null) {
-            instance = new H2MakerRepository();
-        }
-        return instance;
-    }
-
+    
     private H2MakerRepository() {
     }
 

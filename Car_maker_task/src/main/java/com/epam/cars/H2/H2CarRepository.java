@@ -3,6 +3,7 @@ package com.epam.cars.h2;
 import com.epam.cars.CarRepository;
 import com.epam.cars.MakerRepository;
 import com.epam.cars.model.Car;
+import com.epam.cars.model.Maker;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashMap;
@@ -20,10 +21,11 @@ import org.springframework.stereotype.Repository;
 @Repository
 public class H2CarRepository implements CarRepository {
 
-    public static H2CarRepository instance;
-
     @Autowired
-    private MakerRepository makerRep;
+    private MakerRepository makerRepo;
+
+    private final Maker nullMaker = new Maker("name", "adress", 0);
+    private final Car nullCar = new Car(nullMaker, "model", 0, " color");
 
     private static final Logger LOG = LoggerFactory.getLogger(H2MakerRepository.class.getName());
 
@@ -34,20 +36,18 @@ public class H2CarRepository implements CarRepository {
 
     private long lastCarId = 0;
 
-    public static synchronized H2CarRepository getInstance() {
-        if (instance == null) {
-            instance = new H2CarRepository();
-        }
-        return instance;
-    }
-
     private H2CarRepository() {
     }
 
     @Override
     public Car getCar(Long id) {
-        return (Car) jdbcTemplate.query("select * from CAR WHERE ID_CAR=?",
+        List<Car> matchList = jdbcTemplate.query("select * from CAR WHERE ID_CAR=?",
                 new Object[]{id}, new CarMapper());
+        if (!matchList.isEmpty()) {
+            return matchList.get(0);
+        } else {
+            return nullCar;
+        }
     }
 
     @Override
@@ -65,7 +65,7 @@ public class H2CarRepository implements CarRepository {
 
         @Override
         public Car mapRow(final ResultSet rs, int rowNum) throws SQLException {
-            Car car = new Car(makerRep.getMaker(rs.getLong("ID_MAKER")),
+            Car car = new Car(makerRepo.getMaker(rs.getLong("ID_MAKER")),
                     rs.getString("MODEL"), rs.getInt("YEAR"), rs.getString("COLOR"));
             car.setId(rs.getLong("ID_CAR"));
             return car;
@@ -95,7 +95,7 @@ public class H2CarRepository implements CarRepository {
     @Override
     public void updateCar(Car car) {
         try {
-            String SQL = "Update CAR set MODEL=:model, COLOR=:color, YEAR=:year, ID_MAKER=:id_maker WHERE ID_CAR=id";
+            String SQL = "Update CAR set MODEL=:model, COLOR=:color, YEAR=:year, ID_MAKER=:id_maker WHERE ID_CAR=:id";
             Map namedParameters = new HashMap();
             namedParameters.put("model", car.getModel());
             namedParameters.put("color", car.getColor());

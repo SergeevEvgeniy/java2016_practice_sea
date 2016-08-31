@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
-public class EditCarServlet {
+public class EditCarController {
 
     private static final String ID = "Id";
     private static final String CAR = "car";
