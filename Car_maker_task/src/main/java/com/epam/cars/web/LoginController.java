@@ -1,7 +1,6 @@
 package com.epam.cars.web;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 import javax.servlet.ServletException;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -16,6 +15,7 @@ public class LoginController {
 
     private final String userID = "admin";
     private final String password = "admin";
+    private boolean nonFault = true;
 
     @RequestMapping(value = "/LoginController", method = RequestMethod.POST)
     public void doPost(HttpServletRequest req,
@@ -25,6 +25,7 @@ public class LoginController {
         String pwd = req.getParameter("pwd");
 
         if (userID.equals(user) && password.equals(pwd)) {
+            nonFault = true;
             HttpSession session = req.getSession();
             session.setMaxInactiveInterval(30 * 60);
             Cookie userName = new Cookie("user", user);
@@ -47,9 +48,9 @@ public class LoginController {
             resp.sendRedirect("LoginSuccess.jsp");
 
         } else {
-            PrintWriter out = resp.getWriter();
-            out.println("<font color=red>User name or password is wrong.</font>");
-            req.getRequestDispatcher("/login.html").forward(req, resp);
+            nonFault = false;
+            req.setAttribute("nonFault", nonFault);
+            req.getRequestDispatcher("/login.jsp").forward(req, resp);
         }
     }
 }
