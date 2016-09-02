@@ -1,9 +1,8 @@
-.loginForm{
-    display:block;
-    margin: 250px 500px;
+#textAlign{
+    vertical-align: middle;
+    text-align:  center;
 }
 
-#loginBut
-{
-    margin: 10px 100px;
+#divButtons{
+    display: inline-block;     
 }

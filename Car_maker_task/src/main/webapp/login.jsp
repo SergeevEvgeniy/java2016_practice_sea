@@ -1,6 +1,5 @@
 <title>Login Page</title> 
 <jsp:include page="joint.jsp"/>
-<link href="//netdna.bootstrapcdn.com/bootswatch/3.1.0/cerulean/bootstrap.min.css" rel="stylesheet">
 <div class="row centered-form">
     <div class="col-xs-12 col-sm-8 col-md-4 col-sm-offset-2 col-md-offset-4">
         <div class="panel panel-default">
@@ -19,11 +18,16 @@
                 </form>
             </div>
             <c:choose>
-                <c:when test="${nonFault==false}">
+                <c:when test="${nonFault==true}">
                     <div class="form-group has-error">
-                        <label class="control-label" for="inputError1">Fault of Authentification</label>
+                        <label class="control-label" for="inputError1" hidden="false">Fault of Authentification</label>
                     </div>
                 </c:when>    
+                <c:otherwise>
+                    <div class="form-group has-error">
+                        <label class="control-label" for="inputError1" hidden="true">Fault of Authentification</label>
+                    </div>
+                </c:otherwise>
             </c:choose>
         </div>
     </div>
