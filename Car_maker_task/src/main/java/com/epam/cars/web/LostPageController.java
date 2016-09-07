@@ -17,3 +17,5 @@ public class LostPageController {
         req.getRequestDispatcher("/login.jsp").forward(req, resp);
     }
 }
+
+//параметры под спринг

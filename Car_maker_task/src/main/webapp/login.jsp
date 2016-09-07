@@ -1,5 +1,8 @@
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ page isELIgnored="false"%>
+
 <title>Login Page</title> 
-<jsp:include page="joint.jsp"/>
+<jsp:include page="dependenciesBootstrap.jsp"/>
 <div class="row centered-form">
     <div class="col-xs-12 col-sm-8 col-md-4 col-sm-offset-2 col-md-offset-4">
         <div class="panel panel-default">
@@ -17,18 +20,11 @@
                     <input type="submit" value="Login" class="btn btn-info btn-block">
                 </form>
             </div>
-            <c:choose>
-                <c:when test="${nonFault==true}">
-                    <div class="form-group has-error">
-                        <label class="control-label" for="inputError1" hidden="false">Fault of Authentification</label>
-                    </div>
-                </c:when>    
-                <c:otherwise>
-                    <div class="form-group has-error">
-                        <label class="control-label" for="inputError1" hidden="true">Fault of Authentification</label>
-                    </div>
-                </c:otherwise>
-            </c:choose>
+            <c:if test="${authFailed}">
+                <div class="form-group has-error">
+                    <label class="control-label" for="inputError1">Fault of Authentification</label>
+                </div>
+            </c:if>    
         </div>
     </div>
 </div>

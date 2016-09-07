@@ -21,7 +21,7 @@ public class H2MakerRepository implements MakerRepository {
 
     private long lastMakerId = 0;
 
-    private final Maker nullMaker = new Maker("name", "adress", 0);
+    //private final Maker nullMaker = new Maker("name", "adress", 0);
 
     private static final Logger log = LoggerFactory.getLogger(H2MakerRepository.class.getName());
 
@@ -71,10 +71,9 @@ public class H2MakerRepository implements MakerRepository {
         List<Maker> readingList = jdbcTemplate.query("select * from MAKER WHERE ID_MAKER=?",
                 new Object[]{id}, new MakerMapper());
         
-        if (readingList.size() == 1) {
+        //if (readingList.size() == 1) { 
             return readingList.get(0);
-        }
-        else return nullMaker;
+        
     }
 
     @Override

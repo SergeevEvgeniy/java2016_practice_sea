@@ -15,7 +15,7 @@ public class LoginController {
 
     private final String userID = "admin";
     private final String password = "admin";
-    private boolean nonFault = true;
+    private static final String authFailed = "authFailed";
 
     @RequestMapping(value = "/LoginController", method = RequestMethod.POST)
     public void doPost(HttpServletRequest req,
@@ -25,7 +25,6 @@ public class LoginController {
         String pwd = req.getParameter("pwd");
 
         if (userID.equals(user) && password.equals(pwd)) {
-            nonFault = true;
             HttpSession session = req.getSession();
             session.setMaxInactiveInterval(30 * 60);
             Cookie userName = new Cookie("user", user);
@@ -48,8 +47,7 @@ public class LoginController {
             resp.sendRedirect("LoginSuccess.jsp");
 
         } else {
-            nonFault = false;
-            req.setAttribute("nonFault", nonFault);
+            req.setAttribute(authFailed, true);
             req.getRequestDispatcher("/login.jsp").forward(req, resp);
         }
     }

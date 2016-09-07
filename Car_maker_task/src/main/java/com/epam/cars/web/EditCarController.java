@@ -1,5 +1,6 @@
 package com.epam.cars.web;
 
+import com.epam.cars.filters.AuthenticationFilter;
 import com.epam.cars.model.Car;
 import com.epam.cars.service.CarService;
 import com.epam.cars.service.MakerService;
@@ -7,6 +8,8 @@ import java.io.IOException;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 @Controller
 public class EditCarController {
 
+    private static final Logger LOG = LoggerFactory.getLogger(AuthenticationFilter.class);
     private static final String ID = "Id";
     private static final String CAR = "car";
     private static final String MAKERS = "makers";
@@ -31,9 +35,15 @@ public class EditCarController {
             throws ServletException, IOException {
 
         req.setAttribute(MAKERS, makerService.getMakers());
-        req.setAttribute(CAR, carService.getCar(id));
-        req.setAttribute(ID, id);
-        req.getRequestDispatcher("editCar.jsp").forward(req, resp);
+
+        try {
+            req.setAttribute(CAR, carService.getCar(id));
+            req.setAttribute(ID, id);
+            req.getRequestDispatcher("editCar.jsp").forward(req, resp);
+        } catch (NullPointerException ex) {
+            LOG.info("No such car found. Forward to new");
+            req.getRequestDispatcher("/new").forward(req, resp);
+        }
     }
 
     @RequestMapping(value = "/edit", method = RequestMethod.POST)

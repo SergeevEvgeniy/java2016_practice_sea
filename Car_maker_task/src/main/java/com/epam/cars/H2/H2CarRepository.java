@@ -46,7 +46,7 @@ public class H2CarRepository implements CarRepository {
         if (!matchList.isEmpty()) {
             return matchList.get(0);
         } else {
-            return nullCar;
+            throw new NullPointerException("nullCar");
         }
     }
 
@@ -74,9 +74,7 @@ public class H2CarRepository implements CarRepository {
 
     @Override
     public void saveCar(Car car) {
-        lastCarId = this.jdbcTemplate.queryForObject("select max(id_car) from Public.CAR",
-                Long.class);
-
+        lastCarId = this.jdbcTemplate.queryForObject("select max(id_car) from Public.CAR", Long.class);
         try {
             String SQL = "Insert into CAR Values(:id, :model, :color, :year, :id_maker)";
             Map namedParameters = new HashMap();
