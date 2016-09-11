@@ -1,13 +1,16 @@
 package com.epam.cars.service;
 
 import com.epam.cars.MakerRepository;
-import com.epam.cars.h2.H2MakerRepository;
 import com.epam.cars.model.Maker;
 import java.util.List;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
+@Service
 public class MakerService {
     
-    private final MakerRepository repo = H2MakerRepository.getInstance();
+    @Autowired
+    private MakerRepository repo;
     
     public List<Maker> getMakers() {
         return repo.getMakers();

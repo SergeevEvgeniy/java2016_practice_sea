@@ -1,0 +1,8 @@
+#textAlign{
+    vertical-align: middle;
+    text-align:  center;
+}
+
+#divButtons{
+    display: inline-block;     
+}

@@ -1,23 +1,23 @@
 package com.epam.cars;
 
-import com.epam.cars.h2.DatabaseConfig;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
-import java.sql.Statement;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.web.context.support.WebApplicationContextUtils;
 
 public class DBDeployListener
         implements ServletContextListener {
 
-    private final DatabaseConfig connect = new DatabaseConfig();
+    @Autowired
+    private JdbcTemplate jdbcTemplate;
 
     private static final Logger LOG = LoggerFactory.getLogger(DBDeployListener.class);
 
@@ -25,9 +25,10 @@ public class DBDeployListener
     private static final String INITTABLES = "insert_def_values.sql";
 
     @Override
-    public void contextInitialized(ServletContextEvent arg0) {
+    public void contextInitialized(ServletContextEvent sce) {
         try {
             Class.forName("org.h2.Driver");
+            injectSpringDependencies(sce);
             if (executeScript(CREATETABLES)) {
                 if (executeScript(INITTABLES)) {
                     LOG.info("db creation scripts was successfully executed");
@@ -50,13 +51,10 @@ public class DBDeployListener
      * @return true if script was successfully executed, false otherwise
      */
     private boolean executeScript(String filename) {
-        try (Connection con = DriverManager.getConnection(connect.getUrl(),
-                connect.getUser(), connect.getPassword());
-                Statement stmt = con.createStatement()) {
-
-            stmt.executeUpdate(readFileAsText(filename));
+        try {
+            jdbcTemplate.execute(readFileAsText(filename));
             return true;
-        } catch (SQLException sqlEx) {
+        } catch (DataAccessException sqlEx) {
             LOG.error("error executing script");
         } catch (IOException ex) {
             LOG.error("error of reading sql-query ", ex);
@@ -79,5 +77,12 @@ public class DBDeployListener
 
     @Override
     public void contextDestroyed(ServletContextEvent sce) {
+    }
+
+    private void injectSpringDependencies(ServletContextEvent sce) {
+        WebApplicationContextUtils
+                .getRequiredWebApplicationContext(sce.getServletContext())
+                .getAutowireCapableBeanFactory()
+                .autowireBean(this);
     }
 }

@@ -3,6 +3,7 @@
 <html>
     <head>
         <title>Car List</title>
+        <jsp:include page="dependenciesBootstrap.jsp"/>  
     </head>
     <body>
         <p>Car List</p>
